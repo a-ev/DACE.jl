@@ -1,0 +1,4 @@
+name = "DACE"
+uuid = "f4439622-e757-4457-9ca0-f65a61d23f40"
+authors = ["Chris Scott <chris.scott@nesi.org.nz>"]
+version = "0.1.0"
