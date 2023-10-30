@@ -10,10 +10,7 @@ initialized::Bool = false
 function init(ord::Integer, nvar::Integer)
     checkversion()
     ccall((:daceInitialize, libdace), Cvoid, (Cuint, Cuint), ord, nvar)
-    if dacegeterror() != 0
-        println("Error: init failed")
-        exit(1)
-    end
+    exitondaceerror("Error: dace init failed")
     initialized = true
 end
 
@@ -40,14 +37,25 @@ function dacegeterror()
     return err
 end
 
-function getmaxorder()
-    ord = ccall((:daceGetMaxOrder, libdace), Cuint, ())
+function exitondaceerror(msg::String)
     if dacegeterror() != 0
-        println("Error: getmaxorder failed")
+        println(msg)
         exit(1)
     end
+end
+
+function getmaxorder()
+    ord = ccall((:daceGetMaxOrder, libdace), Cuint, ())
+    exitondaceerror("Error: getmaxorder failed")
 
     return ord
+end
+
+function getmaxmonomials()
+    maxmon = ccall((:daceGetMaxMonomials, libdace), Cuint, ())
+    exitondaceerror("Error: getmaxmonomials failed")
+
+    return maxmon
 end
 
 include("DA.jl")
