@@ -22,9 +22,37 @@ mutable struct DA
         m_index = Ref{Variable}()
         ccall((:daceAllocateDA, libdace), Cvoid, (Ref{Variable}, Cuint), m_index, 0)
         exitondaceerror("Error: DA() failed")
-        new(m_index)
+        y = new(m_index)
 
-        # TODO: add finalizer
+        finalizer(y) do x
+            ccall((:daceFreeDA, libdace), Cvoid, (Ref{Variable},), x.index)
+            exitondaceerror("Error: Failed to free DA()")
+        end
+
+        return y
+    end
+
+    @doc """
+        DA(da::DA)
+
+    Create a copy of a DA object.
+    """
+    function DA(da::DA)
+        m_index = Ref{Variable}()
+        ccall((:daceAllocateDA, libdace), Cvoid, (Ref{Variable}, Cuint), m_index, 0)
+        exitondaceerror("Error: DA(da::DA) failed to allocate")
+
+        ccall((:daceCopy, libdace), Cvoid, (Ref{Variable}, Ref{Variable}), da.index, m_index)
+        exitondaceerror("Error: DA(da::DA) failed to copy")
+
+        y = new(m_index)
+
+        finalizer(y) do x
+            ccall((:daceFreeDA, libdace), Cvoid, (Ref{Variable},), x.index)
+            exitondaceerror("Error: Failed to free DA()")
+        end
+
+        return y
     end
 
     @doc """
@@ -37,9 +65,14 @@ mutable struct DA
         ccall((:daceAllocateDA, libdace), Cvoid, (Ref{Variable}, Cuint), m_index, 0)
         ccall((:daceCreateConstant, libdace), Cvoid, (Ref{Variable}, Cdouble), m_index, c)
         exitondaceerror("Error: DA(c::Cdouble) failed")
-        new(m_index)
+        y = new(m_index)
 
-        # TODO: add finalizer
+        finalizer(y) do x
+            ccall((:daceFreeDA, libdace), Cvoid, (Ref{Variable},), x.index)
+            exitondaceerror("Error: Failed to free DA()")
+        end
+
+        return y
     end
 
     @doc """
@@ -50,7 +83,7 @@ mutable struct DA
     Note: `c` must be able to be cast to type `Cdouble`.
     """
     function DA(c)
-        DA(convert(Cdouble, c))
+        return DA(convert(Cdouble, c))
     end
 
     @doc """
@@ -63,13 +96,18 @@ mutable struct DA
         ccall((:daceAllocateDA, libdace), Cvoid, (Ref{Variable}, Cuint), m_index, 0)
         ccall((:daceCreateVariable, libdace), Cvoid, (Ref{Variable}, Cuint, Cdouble), m_index, i, c)
         exitondaceerror("Error: DA(i::Cuint, c::Cdouble) failed")
-        new(m_index)
+        y = new(m_index)
 
-        # TODO: add finalizer
+        finalizer(y) do x
+            ccall((:daceFreeDA, libdace), Cvoid, (Ref{Variable},), x.index)
+            exitondaceerror("Error: Failed to free DA()")
+        end
+
+        return y
     end
 
     function DA(i, c)
-        DA(convert(Cuint, i), convert(Cdouble, c))
+        return DA(convert(Cuint, i), convert(Cdouble, c))
     end
 end
 
