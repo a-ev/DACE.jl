@@ -11,6 +11,6 @@ y = sin(x)
 
 # print x and y to screen
 println("x")
-print(DACE.tostring(x))
+print(x)
 println("y = sin(x)")
-print(DACE.tostring(y))
+print(y)
