@@ -4,6 +4,8 @@ using DACE_jll
 
 DACE_JUL_MAJOR::Integer = 2
 DACE_JUL_MINOR::Integer = 0
+# TODO: how to avoid hardcoding this (e.g. add function to dace that returns it, load from header...)
+DACE_STRLEN = 140
 
 initialized::Bool = false
 
@@ -85,7 +87,7 @@ end
 Return the maximum order currently set for the computations or zero if
 undefined.
 """
-function getmaxorder()
+function getmaxorder()::Int
     ord = ccall((:daceGetMaxOrder, libdace), Cuint, ())
     exitondaceerror("Error: getmaxorder failed")
 
@@ -98,7 +100,7 @@ end
 Return the maximum number of monomials available with the order and number of
 variables specified, or zero if undefined.
 """
-function getmaxmonomials()
+function getmaxmonomials()::Int
     maxmon = ccall((:daceGetMaxMonomials, libdace), Cuint, ())
     exitondaceerror("Error: getmaxmonomials failed")
 

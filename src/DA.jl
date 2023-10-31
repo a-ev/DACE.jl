@@ -98,10 +98,8 @@ Convert DA object to string.
 function tostring(da::DA)
     # initialise 2d char array
     nstr = getmaxmonomials() + 2
-    # TODO: how to avoid hardcoding this (e.g. add function to dace that returns it)
-    dace_strlen = 140
     nstrout = Ref{Cuint}()
-    ss = Vector{UInt8}(undef, nstr*dace_strlen)
+    ss = Vector{UInt8}(undef, nstr * DACE_STRLEN)
 
     # call dacewrite
     ccall((:daceWrite, libdace), Cvoid, (Ref{Variable}, Ref{UInt8}, Ref{Cuint}), da.index, ss, nstrout)
@@ -110,14 +108,26 @@ function tostring(da::DA)
     # construct string from array
     s = ""
     for i in 1:nstrout[]
-        lower = (i - 1) * dace_strlen + 1
-        upper = i * dace_strlen
+        lower = (i - 1) * DACE_STRLEN + 1
+        upper = i * DACE_STRLEN
         tmps = unsafe_string(pointer(ss[lower:upper]))
         s = s * tmps * "\n"
     end
 
     return s
 end
+
+"""
+    Base.print(io::IO, da::DA)
+
+Print DA object.
+"""
+function Base.show(io::IO, da::DA)
+    print(io, tostring(da))
+end
+
+# this is used to show values in the REPL / IJulia
+# Base.show(io::IO, m::MIME"text/plain", x::MyString)
 
 """
     Base.sin(z::DA)
@@ -129,6 +139,34 @@ function Base.sin(z::DA)
     temp = DA()
     ccall((:daceSine, libdace), Cvoid, (Ref{Variable}, Ref{Variable}), z.index, temp.index)
     exitondaceerror("Error: daceSine call failed")
+
+    return temp
+end
+
+"""
+    Base.cos(z::DA)
+
+Compute the cosine of a DA object. Returns a new DA object containing the result
+of the operation.
+"""
+function Base.cos(z::DA)
+    temp = DA()
+    ccall((:daceCosine, libdace), Cvoid, (Ref{Variable}, Ref{Variable}), z.index, temp.index)
+    exitondaceerror("Error: daceCosine call failed")
+
+    return temp
+end
+
+"""
+    Base.tan(z::DA)
+
+Compute the tangent of a DA object. Returns a new DA object containing the result
+of the operation.
+"""
+function Base.tan(z::DA)
+    temp = DA()
+    ccall((:daceTangent, libdace), Cvoid, (Ref{Variable}, Ref{Variable}), z.index, temp.index)
+    exitondaceerror("Error: daceTangent call failed")
 
     return temp
 end
