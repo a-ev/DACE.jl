@@ -1,5 +1,11 @@
 # Implement AlgebraicVector using Julia Vector
 
+"""
+    Base.sin(x::Vector{DA})::Vector{DA}
+
+Compute the sine of a Vector{DA}. The result is
+copied to a new Vector{DA}.
+"""
 function Base.sin(x::Vector{DA})::Vector{DA}
     temp = Vector{DA}(undef, length(x))
     for i in 1:length(x)
@@ -10,6 +16,13 @@ function Base.sin(x::Vector{DA})::Vector{DA}
 end
 
 
+"""
+    gradient(x::DA)::Vector{DA}
+
+Compute the gradient of the DA object. Returns a Vector{DA}
+containing the derivatives of the DA object with respect to all
+independent DA variables.
+"""
 function gradient(x::DA)::Vector{DA}
     nvar = getmaxvariables()
     temp = Vector{DA}(undef, nvar)

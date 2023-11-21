@@ -357,6 +357,12 @@ function Base.sqrt(da::DA)::DA
     return temp
 end
 
+"""
+    deriv(da::DA, i::Integer)::DA
+
+Compute the derivative of a DA object with respect to variable i.
+The result is copied in a new DA object.
+"""
 function deriv(da::DA, i::Integer)::DA
     temp = DA()
     ccall((:daceDifferentiate, libdace), Cvoid, (Cuint, Ref{Variable}, Ref{Variable}), i, da.index, temp.index)
