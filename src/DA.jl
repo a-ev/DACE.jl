@@ -118,7 +118,7 @@ function tostring(da::DA)
 end
 
 """
-    Base.print(io::IO, da::DA)
+    Base.show(io::IO, da::DA)
 
 Print DA object.
 """
@@ -167,6 +167,200 @@ function Base.tan(z::DA)
     temp = DA()
     ccall((:daceTangent, libdace), Cvoid, (Ref{Variable}, Ref{Variable}), z.index, temp.index)
     exitondaceerror("Error: daceTangent call failed")
+
+    return temp
+end
+
+"""
+    Base.:+(da1::DA, da2::DA)
+
+Compute the addition between two DA objects. The result is copied to a new DA
+object.
+"""
+function Base.:+(da1::DA, da2::DA)
+    temp = DA()
+    ccall((:daceAdd, libdace), Cvoid, (Ref{Variable}, Ref{Variable}, Ref{Variable}), da1.index, da2.index, temp.index)
+    exitondaceerror("Error: addition of two DA objects failed")
+
+    return temp
+end
+
+"""
+    Base.:+(da::DA, c::Float64)
+
+Compute the addition between a DA object and a given constant. The result is
+copied to a new DA object.
+"""
+function Base.:+(da::DA, c::Float64)
+    temp = DA()
+    ccall((:daceAddDouble, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: addition of DA and a given constant failed")
+
+    return temp
+end
+
+"""
+    Base.:+(c::Float64, da::DA)
+
+Compute the addition between a given constant and a DA object. The result is
+copied to a new DA object.
+"""
+function Base.:+(c::Float64, da::DA)
+    temp = DA()
+    ccall((:daceAddDouble, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: addition of a given constant and DA failed")
+
+    return temp
+end
+
+
+"""
+    Base.:-(da1::DA, da2::DA)
+
+Compute the subtraction between two DA objects (da1-da2). The result is copied
+to a new DA object.
+"""
+function Base.:-(da1::DA, da2::DA)
+    temp = DA()
+    ccall((:daceSubtract, libdace), Cvoid, (Ref{Variable}, Ref{Variable}, Ref{Variable}), da1.index, da2.index, temp.index)
+    exitondaceerror("Error: subtraction between two DA objects failed")
+
+    return temp
+end
+
+"""
+    Base.:-(da::DA, c::Float64)
+
+Compute the subtraction between a DA object and a given constant (da-c). The
+result is copied to a new DA object.
+"""
+function Base.:-(da::DA, c::Float64)
+    temp = DA()
+    ccall((:daceSubtractDouble, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: subtraction between DA and a given constant failed")
+
+    return temp
+end
+
+"""
+    Base.:-(c::Float64, da::DA)
+
+Compute the subtraction between a given constant and a DA object (c-da). The
+result is copied to a new DA object.
+"""
+function Base.:-(c::Float64, da::DA)
+    temp = DA()
+    ccall((:daceDoubleSubtract, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: subtraction of a given constant and DA failed")
+
+    return temp
+end
+
+
+"""
+    Base.:*(da1::DA, da2::DA)
+
+Compute the multiplication between two DA objects. The result is copied
+to a new DA object.
+"""
+function Base.:*(da1::DA, da2::DA)
+    temp = DA()
+    ccall((:daceMultiply, libdace), Cvoid, (Ref{Variable}, Ref{Variable}, Ref{Variable}), da1.index, da2.index, temp.index)
+    exitondaceerror("Error: multiplication between two DA objects failed")
+
+    return temp
+end
+
+"""
+    Base.:*(da::DA, c::Float64)
+
+Compute the multiplication between a DA object and a given constant. The
+result is copied to a new DA object.
+"""
+function Base.:*(da::DA, c::Float64)
+    temp = DA()
+    ccall((:daceMultiplyDouble, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: multiplication between DA and a given constant failed")
+
+    return temp
+end
+
+"""
+    Base.:*(c::Float64, da::DA)
+
+Compute the multiplication between a given constant and a DA object. The
+result is copied to a new DA object.
+"""
+function Base.:*(c::Float64, da::DA)
+    temp = DA()
+    ccall((:daceMultiplyDouble, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: multiplication between given constant and DA failed")
+
+    return temp
+end
+
+
+"""
+    Base.:/(da1::DA, da2::DA)
+
+Compute the division between two DA objects (da1/da2). The result is copied
+to a new DA object.
+"""
+function Base.:/(da1::DA, da2::DA)
+    temp = DA()
+    ccall((:daceDivide, libdace), Cvoid, (Ref{Variable}, Ref{Variable}, Ref{Variable}), da1.index, da2.index, temp.index)
+    exitondaceerror("Error: division between two DA objects failed")
+
+    return temp
+end
+
+"""
+    Base.:/(da::DA, c::Float64)
+
+Compute the division between a DA object and a given constant (da/c). The
+result is copied to a new DA object.
+"""
+function Base.:/(da::DA, c::Float64)
+    temp = DA()
+    ccall((:daceDivideDouble, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: division between DA and a given constant failed")
+
+    return temp
+end
+
+"""
+    Base.:/(c::Float64, da::DA)
+
+Compute the division between a given constant and a DA object (c/da). The
+result is copied to a new DA object.
+"""
+function Base.:/(c::Float64, da::DA)
+    temp = DA()
+    ccall((:daceDoubleDivide, libdace), Cvoid, (Ref{Variable}, Cdouble, Ref{Variable}), da.index, c, temp.index)
+    exitondaceerror("Error: division between given constant and DA failed")
+
+    return temp
+end
+
+
+"""
+    Base.sqrt(da::DA)
+
+Compute the square root of a DA object. The result is copied to a new DA
+object.
+"""
+function Base.sqrt(da::DA)::DA
+    temp = DA()
+    ccall((:daceSquareRoot, libdace), Cvoid, (Ref{Variable}, Ref{Variable}), da.index, temp.index)
+    exitondaceerror("Error: sqrt of DA failed")
+
+    return temp
+end
+
+function deriv(da::DA, i::Integer)::DA
+    temp = DA()
+    ccall((:daceDifferentiate, libdace), Cvoid, (Cuint, Ref{Variable}, Ref{Variable}), i, da.index, temp.index)
+    exitondaceerror("Error: deriv of DA failed")
 
     return temp
 end

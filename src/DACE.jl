@@ -107,6 +107,19 @@ function getmaxmonomials()::Int
     return maxmon
 end
 
+"""
+    getmaxvariables()
+
+Return the maximum number of variables.
+"""
+function getmaxvariables()::Int
+    maxvar = ccall((:daceGetMaxVariables, libdace), Cuint, ())
+    exitondaceerror("Error: getmaxvariables failed")
+
+    return maxvar
+end
+
 include("DA.jl")
+include("AlgebraicVector.jl")
 
 end  # module DACE
