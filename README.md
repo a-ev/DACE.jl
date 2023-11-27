@@ -9,9 +9,9 @@ Julia interface to [DACE](https://github.com/dacelib/dace).
 Install dependencies:
 
 ```
-(@v1.9) pkg> activate dacetest
-(dacetest) pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
-(dacetest) pkg> add https://github.com/chrisdjscott/DACE.jl.git
+$ julia --project
+(DACE) pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
+(DACE) pkg> add https://github.com/chrisdjscott/DACE.jl.git
 ```
 
 Run something:
@@ -26,7 +26,7 @@ julia> DACE.dacegetversion()
 Run an example:
 
 ```
-$ julia --project dacetest examples/example1.jl
+$ julia --project examples/example1.jl
 x
      I  COEFFICIENT              ORDER EXPONENTS
      1    1.0000000000000000e+00   0   0
