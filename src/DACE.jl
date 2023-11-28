@@ -17,6 +17,8 @@ module DACE
         print(io, toString(vec))
     end
 
+    include("docs.jl")
+
     # define some exports
     export DA, AlgebraicVector
     export deriv
