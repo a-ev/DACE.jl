@@ -9,7 +9,7 @@ DACE_jll = "40de70a5-cf80-53d9-bda4-3aa67fea2f4f"
 
 [compat]
 CxxWrap = "0.14"
-DACE_jll = ">= 0.0.3"
+DACE_jll = ">= 0.0.4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
