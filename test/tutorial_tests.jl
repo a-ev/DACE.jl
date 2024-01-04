@@ -1,9 +1,3 @@
-@testset "Create DA" begin
-    DACE.init(10, 1)
-    da = DACE.DA()
-end
-
-
 @testset "Tutorial 1 Example 6" begin
     function ErrFunc(x::DA)::DA
         my_pi = 4.0 * atan(1.0)

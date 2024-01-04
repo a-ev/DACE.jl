@@ -1,17 +1,13 @@
 using DACE
 using Test
 
-@testset "DACE tests" begin
-
-    @testset "Common tests" begin
-        include("common_tests.jl")
-    end
-    
-    @testset "DA tests" begin
-        include("DA_tests.jl")
+@testset verbose = true "DACE tests" begin
+    @testset verbose = true "Tutorials" begin
+        include("tutorial_tests.jl")
     end
 
-    @testset "Validation tests" begin
+    @testset verbose = true "Validation tests" begin
+        include("validation_2.jl")
         include("validation_3.jl")
     end
 end
