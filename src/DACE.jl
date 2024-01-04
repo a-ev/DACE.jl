@@ -19,7 +19,16 @@ module DACE
 
     include("docs.jl")
 
+    Base.zero(::Type{DA}) = DA()
+
+    function Base.similar(foo::AlgebraicVector{DA})
+        sz = size(foo)[1]
+        bar = AlgebraicVector{DA}(sz)
+        return bar
+    end
+
     # define some exports
     export DA, AlgebraicVector
-    export deriv
+    export deriv, integ
+    #export eval, evalScalar
 end  # module DACE
