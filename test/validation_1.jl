@@ -2,7 +2,7 @@
     @testset "1.1 Maximum order, number of variables, and number of monomials" begin
         for order = 1:10
             for nvar = 1:6
-                @testset "2 DACE initialisation (order=$(order), nvar=$(nvar))" begin
+                @testset "order=$(order), nvar=$(nvar)" begin
                     DACE.init(order, nvar)
                     @test order == DACE.getMaxOrder()
                     @test nvar == DACE.getMaxVariables()
