@@ -267,9 +267,13 @@
                 a_exact = 0.0
                 @test isapprox(a_dace, a_exact, atol=eps)
             else
-                # TODO: I think there is a problem with a_exact (the values from DACE, i.e. a_dace, seem to be correc)
+                # TODO: I think there is a problem with a_exact (the values from DACE, i.e. a_dace, seem to be correct)
                 a_exact = bernoulli(i+1) * 4.0^((i+1)/2) * 4.0^((i+1)/2-1) / factorial(i+1)
                 @test_broken isapprox(a_dace, a_exact, atol=eps)
+
+                # possibly correct formula based on https://proofwiki.org/wiki/Power_Series_Expansion_for_Hyperbolic_Tangent_Function
+                a_exact = 2^(i+1) * (2^(i+1) - 1) * bernoulli(i+1) / factorial(i+1)
+                @test isapprox(a_dace, a_exact, atol=eps)
             end
         end
     end
