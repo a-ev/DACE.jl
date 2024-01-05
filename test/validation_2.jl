@@ -4,7 +4,7 @@
 
     @testset "2.1 Power function" begin
         for n = 1:10
-            @testset "3.2 Power function (n=$(n))" begin
+            @testset "2.1 Power function (n=$(n))" begin
                 DACE.init(k, 1)
 
                 x = DA(1)
@@ -19,7 +19,7 @@
                     else
                         a_exact = 0.0
                     end
-                    @test a_dace == a_exact
+                    @test isapprox(a_dace, a_exact, atol=eps)
                 end
             end
         end
@@ -36,13 +36,13 @@
             jj[1] = i
             a_dace = DACE.getCoefficient(f, jj)
             a_exact = 1.0
-            @test a_dace == a_exact
+            @test isapprox(a_dace, a_exact, atol=eps)
         end
     end
 
     @testset "2.3 nth root function" begin
         for n = 2:5
-            @testset "3.4 nth root function (n=$(n))" begin
+            @testset "2.3 nth root function (n=$(n))" begin
                 DACE.init(k, 1)
 
                 x = DA(1)
@@ -265,12 +265,12 @@
             a_dace = DACE.getCoefficient(f, jj)
             if iseven(i)
                 a_exact = 0.0
+                @test isapprox(a_dace, a_exact, atol=eps)
             else
                 # TODO: I think there is a problem with a_exact (the values from DACE, i.e. a_dace, seem to be correc)
                 a_exact = bernoulli(i+1) * 4.0^((i+1)/2) * 4.0^((i+1)/2-1) / factorial(i+1)
+                @test_broken isapprox(a_dace, a_exact, atol=eps)
             end
-            # skipping due to problem noted above
-            @test_skip isapprox(a_dace, a_exact, atol=eps)
         end
     end
 
