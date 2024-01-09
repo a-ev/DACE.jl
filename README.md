@@ -39,4 +39,4 @@ y(1.0)   = 0.8414709848078965
 sin(1.0) = 0.8414709848078965
 ```
 
-More examples of how to use *DACE.jl* can be found in the tests, for example [validation_2.jl](tests/validation_2.jl).
+More examples of how to use *DACE.jl* can be found in the tests, for example [validation_2.jl](test/validation_2.jl).
