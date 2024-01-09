@@ -16,4 +16,5 @@ println("y = sin(x)")
 print(y)
 
 # evaluate y at 1.0
-println("y(1.0) = $(DACE.evalScalar(y, 1.0))")
+println("y(1.0)   = $(DACE.evalScalar(y, 1.0))")
+println("sin(1.0) = $(sin(1.0))")
