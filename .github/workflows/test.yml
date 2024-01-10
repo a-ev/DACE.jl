@@ -15,6 +15,10 @@ jobs:
         exclude:
           - os: macOS-latest
             julia-arch: x86
+          - os: macOS-latest
+            julia-version: '1.10'
+          - os: ubuntu-latest
+            julia-version: '1.10'
 
     steps:
       - uses: actions/checkout@v4

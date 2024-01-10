@@ -3,7 +3,8 @@ module DACE
     using CxxWrap
 
     # load the C++ interface
-    @wrapmodule(() -> libdace, :define_julia_module)
+    #@wrapmodule(() -> libdace, :define_julia_module)
+    @wrapmodule(() -> "/home/cdjs/DocumentsSync/work/projects/dace-julia/dace/buildjl/interfaces/cxx/libdace.so", :define_julia_module)
     function __init__()
         @initcxx
     end
