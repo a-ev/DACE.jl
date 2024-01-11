@@ -14,7 +14,7 @@
     y = ErrFunc(x)
 
     # compute the Taylor expansion of the indefinite integral of erf
-    Inty = integ(y, 1)
+    Inty = DACE.integ(y, 1)
 
     # compute int_{-1}^{+1} (erf)
     value = DACE.evalScalar(Inty, 1.0) - DACE.evalScalar(Inty, -1.0)
