@@ -4,6 +4,8 @@
 
 Julia interface to [DACE](https://github.com/dacelib/dace).
 
+Documentation is [here](https://chrisdjscott.github.io/DACE.jl/).
+
 ## Example usage
 
 Install dependencies:
@@ -13,6 +15,9 @@ $ julia --project
 (DACE) pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
 (DACE) pkg> add https://github.com/chrisdjscott/DACE.jl.git
 ```
+
+Note: the second `add` command above may not be needed if you are
+running from this directory.
 
 Run an example:
 
