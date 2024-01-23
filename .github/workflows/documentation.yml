@@ -20,6 +20,8 @@ jobs:
           version: '1.9'
       - run: julia --project -e 'using Pkg; Pkg.add(url="https://github.com/chrisdjscott/DACE_jll.jl.git")'
         shell: bash
+      - run: julia --project=docs/ -e 'using Pkg; Pkg.add(url="https://github.com/chrisdjscott/DACE_jll.jl.git")'
+        shell: bash
       - name: Install dependencies
         run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - name: Build and deploy
