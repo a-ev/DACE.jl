@@ -22,7 +22,7 @@ running from this directory.
 Run an example:
 
 ```
-$ julia --project examples/example1.jl
+$ julia --project examples/sine.jl
 x
      I  COEFFICIENT              ORDER EXPONENTS
      1    1.0000000000000000e+00   1   1

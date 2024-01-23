@@ -16,13 +16,17 @@ pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
 pkg> add https://github.com/chrisdjscott/DACE.jl.git
 ```
 
+Note: the second `add` command above may not be needed if you are
+running from main directory of the repository.
+
 ## Notes about the interface
 
 - The Julia interface is built using [CxxWrap.jl](https://github.com/JuliaInterop/CxxWrap.jl)
 - The C++ source for the interface is currently in [this fork](https://github.com/chrisdjscott/dace/tree/julia-interface/interfaces/julia)
   of the DACE library
-- The C++ code gets built and released to the DACE\_jll package, currently located
-  [here](https://github.com/chrisdjscott/DACE_jll.jl)
+- The C++ code gets built and released to the DACE\_jll package
+  - DACE\_jll is located [here](https://github.com/chrisdjscott/DACE_jll.jl)
+  - the build recipe is currently [here](https://github.com/chrisdjscott/Yggdrasil/tree/beacbce0777417d58d748729e5bc1ab73604aa93/D/DACE)
 - The Julia component of the interface is currently [here](https://github.com/chrisdjscott/DACE.jl)
 
 The above may change, in particular we hope to:
