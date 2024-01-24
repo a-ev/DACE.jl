@@ -1,6 +1,6 @@
 # # Polynomial inversion
 #
-# This is a simple DACE example demonstrating:
+# This is a DACE example showing polynomial inversion, demonstrating:
 #
 # - How to load DACE.jl
 # - How to initialise the DACE library
@@ -46,12 +46,12 @@ y[1] = sin(x)
 
 inv_y = DACE.invert(y)
 
-# Compare with asin(x)
-#
-# Polynomial inversion of `sin(x)`
+# Finally compare the polynomial inversion of `sin(x)`
 
+println("polynomial inversion of sin(x)")
 println(inv_y)
 
-# `asin(x)`
+# with `asin(x)`
 
+println("asin(x)")
 println(asin(x))
