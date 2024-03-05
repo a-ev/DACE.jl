@@ -6,22 +6,17 @@ Create an empty DA object representing the constant zero function.
 """ DA
 
 @doc """
-    DA(c::Float64)
+    DA(c::Number)
 
 Create a DA object with the constant part equal to `c`.
-""" DA(c::Float64)
+""" DA(c::Number)
 
 @doc """
-    DA(i::Integer, c::Float64)
+    DA(i::Integer, c::Number)
 
 Create a DA object as `c` times the independent variable number `i`.
-""" DA(i::Integer, c::Float64)
+""" DA(i::Integer, c::Number)
 
-@doc """
-    DA(i::Integer)
-
-Create a DA object as 1.0 times the independent variable number `i`.
-""" DA(i::Integer)
 
 @doc """
     init(ord::Integer, nvar::Integer)
