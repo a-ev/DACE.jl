@@ -7,8 +7,8 @@
             @testset "2.1 Power function (n=$(n))" begin
                 DACE.init(k, 1)
 
-                x = DA(1)
-                f = (1 + x)^n
+                x = DA(1, 1)
+                f = DACE.powi(1 + x, n)
 
                 jj = Vector{UInt32}(undef, 1)
                 for i in 0:k
@@ -28,7 +28,7 @@
     @testset "2.2 Division" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = 1 / (1 - x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -45,7 +45,7 @@
             @testset "2.3 nth root function (n=$(n))" begin
                 DACE.init(k, 1)
 
-                x = DA(1)
+                x = DA(1, 1)
                 f = DACE.root(1 + x, n)
 
                 jj = Vector{UInt32}(undef, 1)
@@ -68,7 +68,7 @@
     @testset "2.4 Exponential function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = exp(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -83,7 +83,7 @@
     @testset "2.5 Logarithmic function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = log(1 + x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -102,7 +102,7 @@
     @testset "2.6 Sine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = sin(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -121,7 +121,7 @@
     @testset "2.7 Cosine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = cos(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -140,7 +140,7 @@
     @testset "2.8 Tangent function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = tan(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -159,7 +159,7 @@
     @testset "2.9 Arcsine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = asin(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -178,7 +178,7 @@
     @testset "2.10 Arccosine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = acos(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -199,7 +199,7 @@
     @testset "2.11 Arctangent function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = atan(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -218,7 +218,7 @@
     @testset "2.12 Hyperbolic sine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = sinh(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -237,7 +237,7 @@
     @testset "2.13 Hyperbolic cosine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = cosh(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -256,7 +256,7 @@
     @testset "2.14 Hyperbolic tangent function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = tanh(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -281,7 +281,7 @@
     @testset "2.15 Hyperbolic arcsine function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = asinh(x)
 
         jj = Vector{UInt32}(undef, 1)
@@ -300,7 +300,7 @@
     @testset "2.16 Hyperbolic arctangent function" begin
         DACE.init(k, 1)
 
-        x = DA(1)
+        x = DA(1, 1)
         f = atanh(x)
 
         jj = Vector{UInt32}(undef, 1)

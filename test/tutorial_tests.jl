@@ -8,7 +8,7 @@
     # initialize DACE for 24th-order computations in 1 variable
     DACE.init(24, 1)
 
-    x = DA(1)
+    x = DA(1, 1)
 
     # compute Taylor expansion of the erf
     y = ErrFunc(x)
