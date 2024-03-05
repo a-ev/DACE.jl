@@ -32,7 +32,7 @@ DACE.init(10, 1)
 
 # Initialise `x` as a `DA` object
 
-x = DACE.DA(1)
+x = DACE.DA(1, 1)
 
 # Create `y` as `AlgebraicVector` of type `DA` and size 1
 
