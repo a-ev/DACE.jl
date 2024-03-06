@@ -33,6 +33,14 @@ module DACE
     # promotion of number to DA
     Base.convert(::Type{DA}, x::Number) = DA(convert(Float64, x))
 
+    # overloading power operator for different input types
+    function Base.:^(da::DA, p::Integer)
+        return DACE.powi(da, p)
+    end
+    function Base.:^(da::DA, p::Float64)
+        return DACE.powd(da, p)
+    end
+
     # define some exports
     export DA, AlgebraicVector
 end  # module DACE

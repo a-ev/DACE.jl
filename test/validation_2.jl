@@ -8,7 +8,7 @@
                 DACE.init(k, 1)
 
                 x = DA(1, 1)
-                f = DACE.powi(1 + x, n)
+                f = (1 + x)^n
 
                 jj = Vector{UInt32}(undef, 1)
                 for i in 0:k
