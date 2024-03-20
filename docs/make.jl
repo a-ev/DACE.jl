@@ -33,7 +33,7 @@ example_pages = [
 
 pages = [
     "Home" => "index.md",
-    "Developing" => "developing.md",
+    "Developer Guide" => "developing.md",
     "Examples" => example_pages,
 ]
 
