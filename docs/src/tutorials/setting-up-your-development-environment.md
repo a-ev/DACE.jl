@@ -6,6 +6,9 @@
 This tutorial will run through setting up DACE\_jll.jl, DACE.jl and the DACE C++ library for development locally.
 It has been tested on Linux.
 
+After running this tutorial, you should be able to make changes to the C++ code that defines the DACE Julia interface,
+compile those changes and test them via the DACE.jl Julia package locally.
+
 This is based on the upstream binary builder documention for how to develop locally:
 
 - [https://docs.binarybuilder.org/stable/building/#Building-and-testing-JLL-packages-locally](https://docs.binarybuilder.org/stable/building/#Building-and-testing-JLL-packages-locally)
