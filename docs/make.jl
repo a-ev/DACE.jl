@@ -31,9 +31,14 @@ example_pages = [
     "Polynomial inversion" => "generated/polynomial_inversion.md",
 ]
 
+tutorial_pages = [
+    "Setting up your development environment" => "tutorials/setting-up-your-development-environment.md",
+]
+
 pages = [
     "Home" => "index.md",
     "Developer Guide" => "developing.md",
+    "Tutorials" => tutorial_pages,
     "Examples" => example_pages,
 ]
 
