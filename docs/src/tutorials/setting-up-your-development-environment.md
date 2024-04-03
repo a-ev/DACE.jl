@@ -53,7 +53,7 @@ Run `julia --project` to enter the Julia REPL and enter `]` to enter the Pkg REP
 After running the above, press backspace to return to the Julia REPL and run
 
 ```julia
-julia> using DACE
+julia> using DACE_jll
 julia> DACE_jll.dev_jll()
 ```
 
