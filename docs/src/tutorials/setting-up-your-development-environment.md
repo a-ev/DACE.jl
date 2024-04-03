@@ -47,9 +47,6 @@ Run `julia --project` to enter the Julia REPL and enter `]` to enter the Pkg REP
 (DACE) pkg> develop DACE_jll
 ```
 
-!!! warning
-    TODO: check if extra steps required here to install other dependencies, might need `(DACE) pkg> instantiate`?
-
 After running the above, press backspace to return to the Julia REPL and run
 
 ```julia
