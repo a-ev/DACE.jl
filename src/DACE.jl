@@ -22,7 +22,7 @@ module DACE
     end
 
     # addittive and multiplicative identities
-    Base.zero(::Type{DA}) = DA()
+    Base.zero(::Type{DA}) = DA(0.0)
     Base.one(::Type{DA}) = DA(1.0)
 
     # implement the similar function for AlgebraicVector
@@ -51,8 +51,9 @@ module DACE
     end
 
     # constructors for concrete DA type
-    DAAllocated() = DA()
-    DAAllocated(x::Number) = DA(x)
+    DA(x::Rational) = DA(convert(Float64,x))
+    DAAllocated() = DA(0.0)
+    DAAllocated(x::Real) = DA(x)
 
     # define some exports
     export DA, AlgebraicVector
