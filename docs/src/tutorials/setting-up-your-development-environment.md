@@ -25,11 +25,11 @@ Create and change to a new directory that we can clone the DACE code into. Then 
 
 - DACE.jl Julia package
   ```
-  git clone https://github.com/chrisdjscott/DACE.jl.git
+  git clone https://github.com/a-ev/DACE.jl.git
   ```
 - DACE C++ library (note specific branch required)
   ```
-  git clone --branch julia-interface https://github.com/chrisdjscott/dace.git
+  git clone --branch julia-interface https://github.com/a-ev/dace.git
   ```
 
 Switch to the *DACE.jl* directory you just cloned:

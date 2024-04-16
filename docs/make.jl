@@ -56,5 +56,5 @@ makedocs(
 )
 
 deploydocs(
-    repo = "github.com/chrisdjscott/DACE.jl.git",
+    repo = "github.com/a-ev/DACE.jl.git",
 )
