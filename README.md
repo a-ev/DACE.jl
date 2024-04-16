@@ -12,7 +12,7 @@ Install dependencies:
 
 ```
 $ julia --project
-(DACE) pkg> add https://github.com/a-ev/DACE_jll.jl.git
+(DACE) pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
 (DACE) pkg> add https://github.com/a-ev/DACE.jl.git
 ```
 
