@@ -4,9 +4,9 @@
 
 The source code for the DACE julia package is split into a couple of different repositories:
 
-- the DACE C/C++ library, including the C++ part of the DACE julia interface [here](https://github.com/chrisdjscott/dace/tree/julia-interface)
+- the DACE C/C++ library, including the C++ part of the DACE julia interface [here](https://github.com/a-ev/dace/tree/julia-interface)
   - the interface is defined in the file *interfaces/julia/dace_julia.cxx*
-- the Julia part of the interface [here](https://github.com/chrisdjscott/DACE.jl)
+- the Julia part of the interface [here](https://github.com/a-ev/DACE.jl)
 
 ## Releasing the DACE\_jll.jl package
 
