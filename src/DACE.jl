@@ -21,7 +21,9 @@ module DACE
         print(io, toString(vec))
     end
 
+    # addittive and multiplicative identities
     Base.zero(::Type{DA}) = DA()
+    Base.one(::Type{DA}) = DA(1.0)
 
     # implement the similar function for AlgebraicVector
     function Base.similar(foo::AlgebraicVector{DA})
@@ -31,7 +33,14 @@ module DACE
     end
 
     # promotion of number to DA
-    Base.convert(::Type{DA}, x::Number) = DA(convert(Float64, x))
+    @inline Base.promote_rule(::Type{T}, ::Type{R}) where {T<:DA, R<:Real} = T
+    @inline Base.promote_rule(::Type{R}, ::Type{T}) where {T<:DA, R<:Real} = T
+
+    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
+        @eval begin
+            Base.convert(::Type{<:DA}, x::$R) = DA(convert(Float64, x))
+        end
+    end
 
     # overloading power operator for different input types
     function Base.:^(da::DA, p::Integer)
@@ -40,6 +49,10 @@ module DACE
     function Base.:^(da::DA, p::Float64)
         return DACE.powd(da, p)
     end
+
+    # constructors for concrete DA type
+    DAAllocated() = DA()
+    DAAllocated(x::Number) = DA(x)
 
     # define some exports
     export DA, AlgebraicVector
