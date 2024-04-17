@@ -42,6 +42,8 @@ JLCXX_MODULE define_julia_module(jlcxx::module& mod) {
 
 All the methods and types defined within the `define_julia_module` function will belong to the generated Julia module when we load it in the *DACE.jl* package.
 
+Refer also to the [CxxWrap.jl module entry point documentation](https://github.com/JuliaInterop/CxxWrap.jl?tab=readme-ov-file#module-entry-point).
+
 ## Adding DA static methods
 
 In the first section of the `define_julia_module` function we add some `DA` static methods:
