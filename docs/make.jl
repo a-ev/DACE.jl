@@ -37,7 +37,7 @@ tutorial_pages = [
 
 pages = [
     "Home" => "index.md",
-    "Developer Guide" => "developing.md",
+#    "Developer Guide" => "developing.md",
     "Tutorials" => tutorial_pages,
     "Examples" => example_pages,
 ]

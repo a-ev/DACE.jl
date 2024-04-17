@@ -1,7 +1,7 @@
 # Setting up your development environment
 
 !!! warning
-    This might not work as is until DACE\_jll is released as a package.
+    These instructions will change when DACE\_jll is released as a package.
 
 This tutorial will run through setting up DACE\_jll.jl, DACE.jl and the DACE C++ library for development locally.
 It has been tested on Linux.
