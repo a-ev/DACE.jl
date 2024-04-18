@@ -48,7 +48,7 @@ Edit the *build\_tarballs.jl* file:
   !!! note
       It is highly recommended to follow [semantic versioning](https://semver.org/)
 
-- change the commit hash (on or around line 15) that the new version will be based of to the hash of the commit you identified in step 2
+- change the commit hash (on or around line 15) that the new version will be based on to the hash of the commit you identified [above](#Make-changes-to-the-DACE-C-code)
   ```
   GitSource("https://github.com/a-ev/dace.git", "9fe534f9b27c147a171bce1ad7dc8b4706a9457e"),
   ```
