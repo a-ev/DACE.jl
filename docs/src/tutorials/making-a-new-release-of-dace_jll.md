@@ -54,4 +54,4 @@ To make a new release of the DACE\_jll package you can follow these steps:
    git push
    ```
    You may need to set the upstream of your repo for `git push` to work. The above commands are just examples and may need tweaking.
-7. Create a pull request back to the main Yggdrasil repo. The builds will run automatically and you can view their status in the pull request. If they all succeed someone will merge them automatically (you don't need to do anything else).
+7. Create a pull request back to the main Yggdrasil repo. The builds will run automatically and you can view their status in the pull request. If they all succeed someone will merge them automatically (you don't need to do anything else). For example, see the [Add DACE recipe pull request](https://github.com/JuliaPackaging/Yggdrasil/pull/8493).
