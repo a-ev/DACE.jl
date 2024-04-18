@@ -39,13 +39,13 @@ To make a new release of the DACE\_jll package you can follow these steps:
      GitSource("https://github.com/a-ev/dace.git", "9fe534f9b27c147a171bce1ad7dc8b4706a9457e"),
      ```
      where *9fe534f9b27c147a171bce1ad7dc8b4706a9457e* is the commit hash
-5. Check the version of *libcxxwrap_julia_jll* which is linked to the version of *CxxWrap.jl*. When bumping the version of the CxxWrap dependency in the *DACE.jl* package you may also need to bump the version of *libcxxwrap_julia_jll* on or around line 55:
+5. Check the version of *libcxxwrap\_julia\_jll* which is linked to the version of *CxxWrap.jl*. When bumping the version of the CxxWrap dependency in the *DACE.jl* package you may also need to bump the version of *libcxxwrap\_julia\_jll* on or around line 55:
    ```
    Dependency("libcxxwrap_julia_jll"; compat = "~0.12.2"),
    ```
    
    !!! important
-       Make sure the version of *libcxxwrap_julia_jll* is compatible with the version of *CxxWrap,jl* in your *Project.toml* for *DACE.jl*
+       Make sure the version of *libcxxwrap\_julia\_jll* is compatible with the version of *CxxWrap,jl* in your *Project.toml* for *DACE.jl*
 
 6. Commit and push your changes into your fork of Yggdrasil:
    ```
@@ -54,4 +54,4 @@ To make a new release of the DACE\_jll package you can follow these steps:
    git push
    ```
    You may need to set the upstream of your repo for `git push` to work. The above commands are just examples and may need tweaking.
-7. Create a pull request back to the main Yggdrasil repo. The builds will run automatically and you can view their status in the pull request. If they all succeed someone will merge them automatically (you don't need to do anything else)
+7. Create a pull request back to the main Yggdrasil repo. The builds will run automatically and you can view their status in the pull request. If they all succeed someone will merge them automatically (you don't need to do anything else).
