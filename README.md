@@ -50,6 +50,6 @@ More examples of how to use *DACE.jl* can be found in the tests, for example [va
 You can run the validation tests with (using `]` to enter pkg mode from the Julia REPL):
 
 ```
-julia --project
+$ julia --project
 (DACE) pkg> test
 ```

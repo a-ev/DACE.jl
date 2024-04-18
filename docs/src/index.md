@@ -15,8 +15,7 @@ type `]` to enter the Pkg REPL mode and run
 pkg> add https://github.com/a-ev/DACE.jl.git
 ```
 
-Note: the second `add` command above may not be needed if you are
-running from main directory of the repository.
+Note: the `add` command above may not be needed if you are running from main directory of the repository.
 
 ## Notes about the interface
 
