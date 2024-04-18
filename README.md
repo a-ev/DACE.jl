@@ -12,12 +12,11 @@ Install dependencies:
 
 ```
 $ julia --project
-(DACE) pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
 (DACE) pkg> add https://github.com/a-ev/DACE.jl.git
 ```
 
-Note: the second `add` command above may not be needed if you are
-running from this directory.
+Note: the `add` command above may not be needed if you are
+running from the directory containing this file.
 
 Run an example:
 
@@ -44,4 +43,13 @@ y(1.0)   = 0.8414709848078965
 sin(1.0) = 0.8414709848078965
 ```
 
+## Running the tests
+
 More examples of how to use *DACE.jl* can be found in the tests, for example [validation_2.jl](test/validation_2.jl).
+
+You can run the validation tests with (using `]` to enter pkg mode from the Julia REPL):
+
+```
+julia --project
+(DACE) pkg> test
+```

@@ -43,7 +43,7 @@ cd DACE.jl
 Run `julia --project` to enter the Julia REPL and enter `]` to enter the Pkg REPL mode, then
 
 ```julia
-(DACE) pkg> add https://github.com/chrisdjscott/DACE_jll.jl.git
+(DACE) pkg> add DACE_jll
 (DACE) pkg> develop DACE_jll
 ```
 
