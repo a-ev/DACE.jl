@@ -55,6 +55,19 @@ module DACE
         return DACE.powd(da, p)
     end
 
+    # overloading comparison operators
+    for op = (:(==), :(!=), :<, :(<=), :>, :(>=))
+
+        # both arguments are DA objects
+        @eval Base.$op(a::DA, b::DA) = $op(DACE.cons(a), DACE.cons(b))
+
+        # one argument is a number
+        for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
+            @eval Base.$op(a::DA, b::$R) = $op(DACE.cons(a), convert(Float64, b))
+            @eval Base.$op(a::$R, b::DA) = $op(convert(Float64, a), DACE.cons(b))
+        end
+    end
+
     # constructors for concrete DA type
     DA(x::Rational) = DA(convert(Float64,x))
     DAAllocated() = DA(0.0)
