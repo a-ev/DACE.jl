@@ -55,7 +55,7 @@ module DACE
         return DACE.powd(da, p)
     end
 
-    # overloading comparison operators
+    # overloading comparison operators (considering only the constant part)
     for op = (:(==), :(!=), :<, :(<=), :>, :(>=))
 
         # both arguments are DA objects
