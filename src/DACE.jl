@@ -2,6 +2,11 @@ module DACE
     using DACE_jll
     using CxxWrap
 
+    mutable struct Interval
+        m_lb::Float64
+        m_ub::Float64
+    end
+
     # load the C++ interface and initialise it
     @wrapmodule(() -> libdace, :define_julia_module)
     function __init__()
