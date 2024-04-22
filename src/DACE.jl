@@ -63,7 +63,9 @@ module DACE
         end
     end
 
+    @eval Base.isfinite(a::DA) = isfinite(DACE.cons(a))
     @eval Base.isinf(a::DA) = isinf(DACE.cons(a))
+    @eval Base.isnan(a::DA) = isnan(DACE.cons(a))
     @eval Base.float(a::DA) = a
 
     # constructors for concrete DA type
