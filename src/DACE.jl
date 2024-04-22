@@ -72,7 +72,9 @@ module DACE
     DAAllocated(x::Real) = DA(x)
 
     # functions needed to interact with DifferentialEquations
-    @eval Base.:^(a::Float64, b::DA) = a^DACE.cons(b)
+    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
+        @eval Base.:^(a::$R, b::DA) = a^DACE.cons(b)
+    end
     @eval DiffEqBase.value(a::DA) = DACE.cons(a)
 
     # define some exports
