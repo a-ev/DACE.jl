@@ -79,6 +79,11 @@ module DACE
     end
     @eval DiffEqBase.value(a::DA) = DACE.cons(a)
 
+    # functions to avoid code duplicates
+    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
+        @eval DACE.cons(a::$R) = a
+    end
+
     # define some exports
     export DA, AlgebraicVector
 end  # module DACE
