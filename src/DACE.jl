@@ -97,5 +97,5 @@ module DACE
     end
 
     # define some exports
-    export DA, AlgebraicVector
+    export DA, AlgebraicVector, compiledDA
 end  # module DACE
