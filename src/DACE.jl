@@ -96,6 +96,11 @@ module DACE
         return res
     end
 
+    # wrappers for compilation and evaluation of DA objects
+    compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
+    eval(cda::compiledDA, v::Vector{<:DA}) = eval(cda, StdVector{DA}(v))
+    eval(cda::compiledDA, v::Vector{Float64}) = eval(cda, StdVector{Float64}(v))
+
     # define some exports
     export DA, AlgebraicVector, compiledDA
 end  # module DACE
