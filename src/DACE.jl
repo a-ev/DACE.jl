@@ -26,6 +26,9 @@ module DACE
     function Base.show(io::IO, vec::AlgebraicVector)
         print(io, toString(vec))
     end
+    function Base.show(io::IO, mat::AlgebraicMatrix)
+        print(io, toString(mat))
+    end
 
     # addittive and multiplicative identities
     Base.zero(::Type{DA}) = DA(0.0)
@@ -102,5 +105,5 @@ module DACE
     eval(cda::compiledDA, v::Vector{Float64}) = eval(cda, StdVector{Float64}(v))
 
     # define some exports
-    export DA, AlgebraicVector, compiledDA
+    export DA, AlgebraicVector, AlgebraicMatrix, compiledDA
 end  # module DACE
