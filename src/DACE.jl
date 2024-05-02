@@ -99,6 +99,10 @@ module DACE
         return res
     end
 
+    # assignment of vector and matrix elements
+    @eval Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
+    @eval Base.setindex!(m::AlgebraicMatrix{<:DA}, x::Real, i::Integer, j::Integer) = m[i,j] = convert(DA, x)
+
     # wrappers for compilation and evaluation of DA objects
     compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
     eval(cda::compiledDA, v::Vector{<:DA}) = eval(cda, StdVector{DA}(v))
