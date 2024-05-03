@@ -26,6 +26,9 @@ module DACE
     function Base.show(io::IO, vec::AlgebraicVector)
         print(io, toString(vec))
     end
+    function Base.show(io::IO, mat::AlgebraicMatrix)
+        print(io, toString(mat))
+    end
 
     # addittive and multiplicative identities
     Base.zero(::Type{DA}) = DA(0.0)
@@ -68,17 +71,43 @@ module DACE
     @eval Base.isnan(a::DA) = isnan(DACE.cons(a))
     @eval Base.float(a::DA) = a
 
-    # constructors for concrete DA type
-    DA(x::Rational) = DA(convert(Float64,x))
-    DAAllocated() = DA(0.0)
-    DAAllocated(x::Real) = DA(x)
-
     # functions needed to interact with DifferentialEquations
     for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
         @eval Base.:^(a::$R, b::DA) = a^DACE.cons(b)
     end
     @eval DiffEqBase.value(a::DA) = DACE.cons(a)
 
+    # functions to avoid code duplicates
+    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
+        @eval DACE.cons(a::$R) = a
+    end
+
+    # constructors for concrete DA type
+    DA(x::Rational) = DA(convert(Float64,x))
+    DAAllocated() = DA(0.0)
+    DAAllocated(x::Real) = DA(x)
+
+    # constructors for AlgebraicVector type
+    # TODO is there a better way to do this?
+    AlgebraicVector(v::Vector{<:DA}) = AlgebraicVector{DA}(v)
+    AlgebraicVector(v::Vector{Float64}) = AlgebraicVector{Float64}(v)
+    AlgebraicVector{T}(v::Vector{<:T}) where T = begin
+        res = AlgebraicVector{T}(length(v))
+        for i in eachindex(v)
+            res[i] = v[i]
+        end
+        return res
+    end
+
+    # assignment of vector and matrix elements
+    @eval Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
+    @eval Base.setindex!(m::AlgebraicMatrix{<:DA}, x::Real, i::Integer, j::Integer) = m[i,j] = convert(DA, x)
+
+    # wrappers for compilation and evaluation of DA objects
+    compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
+    eval(cda::compiledDA, v::Vector{<:DA}) = eval(cda, StdVector{DA}(v))
+    eval(cda::compiledDA, v::Vector{Float64}) = eval(cda, StdVector{Float64}(v))
+
     # define some exports
-    export DA, AlgebraicVector
+    export DA, AlgebraicVector, AlgebraicMatrix, compiledDA
 end  # module DACE
