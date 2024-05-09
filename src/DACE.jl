@@ -103,10 +103,17 @@ module DACE
     @eval Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
     @eval Base.setindex!(m::AlgebraicMatrix{<:DA}, x::Real, i::Integer, j::Integer) = m[i,j] = convert(DA, x)
 
+    # wrappers for map inversion
+    invert(v::Vector{<:DA}) = Vector{DA}(invert(AlgebraicVector(v)))
+
     # wrappers for compilation and evaluation of DA objects
     compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
-    eval(cda::compiledDA, v::Vector{<:DA}) = eval(cda, StdVector{DA}(v))
-    eval(cda::compiledDA, v::Vector{Float64}) = eval(cda, StdVector{Float64}(v))
+    for R in (DA, Float64)
+        @eval eval(cda::compiledDA, v::Vector{<:$R}) = Vector{$R}(eval(cda, AlgebraicVector(v)))
+        @eval eval(da::DA, v::Vector{<:$R}) = eval(da, AlgebraicVector(v))
+        @eval eval(a::Vector{<:DA}, v::Vector{<:$R}) = Vector{$R}(eval(AlgebraicVector(a), AlgebraicVector(v)))
+        @eval eval(a::AlgebraicVector{DA}, v::Vector{<:$R}) = Vector{$R}(eval(a, AlgebraicVector(v)))
+    end
 
     # define some exports
     export DA, AlgebraicVector, AlgebraicMatrix, compiledDA
