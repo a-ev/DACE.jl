@@ -12,4 +12,8 @@ include("utils.jl")
         include("validation_1.jl")
         include("validation_2.jl")
     end
+
+    @testset verbose = true "Operators" begin
+        include("comparison_operators.jl")
+    end
 end
