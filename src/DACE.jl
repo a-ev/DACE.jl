@@ -106,6 +106,11 @@ module DACE
     # wrappers for map inversion
     invert(v::Vector{<:DA}) = Vector{DA}(invert(AlgebraicVector(v)))
 
+    # wrappers for linear part, Jacobian and Hessian
+    linear(v::Vector{<:DA}) = linear(AlgebraicVector(v))
+    jacobian(v::Vector{<:DA}) = jacobian(AlgebraicVector(v))
+    hessian(v::Vector{<:DA}) = stack(hessian(AlgebraicVector(v)), dims=3)
+
     # wrappers for compilation and evaluation of DA objects
     compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
     for R in (DA, Float64)
