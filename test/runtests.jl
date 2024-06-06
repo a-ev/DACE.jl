@@ -16,4 +16,6 @@ include("utils.jl")
     @testset verbose = true "Operators" begin
         include("comparison_operators.jl")
     end
+
+    include("special_functions.jl")
 end
