@@ -1,6 +1,7 @@
 module DACE
     using DACE_jll
     using CxxWrap
+    using SpecialFunctions
     using DiffEqBase
 
     mutable struct Interval
@@ -70,6 +71,10 @@ module DACE
     @eval Base.isinf(a::DA) = isinf(DACE.cons(a))
     @eval Base.isnan(a::DA) = isnan(DACE.cons(a))
     @eval Base.float(a::DA) = a
+
+    # overloading special functions
+    SpecialFunctions.erf(a::DA) = DACE.erf(a)
+    SpecialFunctions.erfc(a::DA) = DACE.erfc(a)
 
     # functions needed to interact with DifferentialEquations
     for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
