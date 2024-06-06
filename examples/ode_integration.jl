@@ -4,13 +4,23 @@
 # equation (ODE) using DA objects as the state components' type.
 # It also demonstrates how to extract the state transition matrix (STM) from the polynomial 
 # expansion of the dynamics flow.
+#
 # In this case, the state vector represents an object in orbit around a central body and 
 # subject only to the gravitational pull of the latter.
 # Its motion is described by the differential equations for the Kepler problem expressed in 
 # Cartesian coordinates.
 
-# # Using DACE
+# ## Install dependencies
+#
+# Make sure the required packages are installed
 
+# ```julia
+# using Pkg
+# Pkg.add("https://github.com/a-ev/DACE.jl.git")
+# ```
+
+# ## Using DACE
+#
 # Load the required modules
 
 using OrdinaryDiffEq
