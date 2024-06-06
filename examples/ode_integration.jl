@@ -1,63 +1,62 @@
-"""
-This tutorials shows how to perform the numerical 
-integration of an ordinary differential equation (ODE) 
-using DA objects as the state components' type.
+# # ODE integration example
+#
+# This tutorial shows how to perform the numerical integration of an ordinary differential 
+# equation (ODE) using DA objects as the state components' type.
+# It also demonstrates how to extract the state transition matrix (STM) from the polynomial 
+# expansion of the dynamics flow.
+# In this case, the state vector represents an object in orbit around a central body and 
+# subject only to the gravitational pull of the latter.
+# Its motion is described by the differential equations for the Kepler problem expressed in 
+# Cartesian coordinates.
 
-It propagates the differential equations for 
-the Keplerian motion in Cartesian parameters.
-"""
+# # Using DACE
+
+# Load the required modules
 
 using OrdinaryDiffEq
 using DACE
 
-# initial parameters defining a circular orbit propagated for 1 revolution
+# Define the parameters and intial conditions for a circular orbit with a normalized radius 
+# equal to one
 μ = 1.0
-ts = 0.0
-tf = 2π
-xs = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
+x0 = [1.0, 0.0, 0.0, 0.0, 1.0, 0.0]
 
-# equations of motion
-function kepler_ode!(du, u, p, t)
+# Set the integration time span equal to one revolution
+t0 = 0.0
+tf = 2π
+
+# Define the equations of motion for the resticted two-body problem
+function kepler_ode!(du, u, μ, _)
     du[1:3] .= u[4:6]
     du[4:6] .= -u[1:3] * μ ./ sum(u[1:3].^2)^(3/2)
 end
 
-# nominal solution
-prob = ODEProblem(kepler_ode!, xs, [ts, tf])
-sol = solve(prob, DP8(), abstol=1e-12, reltol=1e-12)
+# Compute the nominal solution
+prob = ODEProblem(kepler_ode!, x0, [t0, tf], μ)
+sol = solve(prob, Vern9(), abstol=1e-12, reltol=1e-12)
 
-# DACE initialization for computations at second order
+xf = sol.u[end]
+
+# Initialize DACE to compute second-order expansions
 DACE.init(2,6)
 
-# initial conditions as DA vector
+# Define the initial conditions as a DA vector
 dx_dace = [DA(i,1.0) for i in 1:6]
-xs_dace = xs .+ dx_dace
+x0_dace = x0 .+ dx_dace
 
-# polynomial expansion of the dynamics flow
-sol_dace = solve(remake(prob, u0=xs_dace), DP8(), abstol=1e-12, reltol=1e-12)
+println(x0_dace)
 
-# verify that the time steps chosen by the integrator coincide
-t_dace = sol_dace.t
+# Compute the polynomial expansion of the dynamics flow
+sol_dace = solve(remake(prob, u0=x0_dace), Vern9(), abstol=1e-12, reltol=1e-12)
 
-println("Time steps coincide: " * string(all(t_dace .≈ sol.t)))
-
-# verify the (nominal) final state
 xf_dace = sol_dace.u[end]
 xf_cons = DACE.cons.(xf_dace)
 
-println("Max abs error on final state: " * string(maximum(abs.(xf_cons - sol.u[end]))))
+# Verify the (nominal) final state
 
-# extract and print the state transition matrix (STM)
-function dace_jacobian(v::Vector{<:DA})
-    jac = Matrix{Float64}(undef, length(v), DACE.getMaxVariables())
-    for i in 1:length(v)
-        for j in 1:DACE.getMaxVariables()
-            jac[i,j] = DACE.cons(DACE.deriv(v[i],j))
-        end
-    end
-    return jac
-end;
+println("Max abs error on final state: " * string(maximum(abs.(xf_cons - xf))))
 
-stm_dace = dace_jacobian(xf_dace)
-println("State transition matrix:")
-display(stm_dace)
+# Extract the state transition matrix (STM)
+
+stm_dace = DACE.jacobian(xf_dace)
+stm_cons = DACE.cons.(stm_dace)
