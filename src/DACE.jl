@@ -67,6 +67,8 @@ module DACE
         @eval DACE.cons(a::$R) = a
     end
 
+    Base.float(a::DA) = a
+
     # power operators
     Base.:^(da::DA, p::Integer) = DACE.powi(da, p)
     Base.:^(da::DA, p::Float64) = DACE.powd(da, p)
@@ -91,7 +93,6 @@ module DACE
     Base.isfinite(a::DA) = isfinite(DACE.cons(a))
     Base.isinf(a::DA) = isinf(DACE.cons(a))
     Base.isnan(a::DA) = isnan(DACE.cons(a))
-    Base.float(a::DA) = a
 
     # assignment of vector and matrix elements
     Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
