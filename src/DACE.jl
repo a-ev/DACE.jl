@@ -18,43 +18,64 @@ module DACE
     # include the file that contains documentation for some of the DACE C++ wrapped functions
     include("docs.jl")
 
-    # extend DACE functionality
+    # ========================= #
+    # extend DACE functionality #
+    # ========================= #
 
-    # custom show functions for DA and AlgebraicVector objects
-    function Base.show(io::IO, da::DA)
-        print(io, toString(da))
+    # ------------------- #
+    # custom constructors #
+    # ------------------- #
+
+    # concrete DA types
+    DA(x::Rational) = DA(convert(Float64,x))
+    DAAllocated() = DA(0.0)
+    DAAllocated(x::Real) = DA(x)
+
+    # AlgebraicVector objects
+    # TODO is there a better way to do this?
+    AlgebraicVector(v::Vector{<:DA}) = AlgebraicVector{DA}(v)
+    AlgebraicVector(v::Vector{Float64}) = AlgebraicVector{Float64}(v)
+    AlgebraicVector{T}(v::Vector{<:T}) where T = begin
+        res = AlgebraicVector{T}(length(v))
+        for i in eachindex(v)
+            res[i] = v[i]
+        end
+        return res
     end
-    function Base.show(io::IO, vec::AlgebraicVector)
-        print(io, toString(vec))
-    end
-    function Base.show(io::IO, mat::AlgebraicMatrix)
-        print(io, toString(mat))
-    end
+
+    # -------------------------- #
+    # overload functions in Base #
+    # -------------------------- #
 
     # addittive and multiplicative identities
     Base.zero(::Type{DA}) = DA(0.0)
     Base.one(::Type{DA}) = DA(1.0)
 
-    # implement the similar function for AlgebraicVector
+    # similar function for AlgebraicVector
     function Base.similar(foo::AlgebraicVector{DA})
         sz = size(foo)[1]
         bar = AlgebraicVector{DA}(sz)
         return bar
     end
 
-    # promotion of number to DA
+    # promotions and conversions to DA
     @inline Base.promote_rule(::Type{T}, ::Type{R}) where {T<:DA, R<:Real} = T
     @inline Base.promote_rule(::Type{R}, ::Type{T}) where {T<:DA, R<:Real} = T
 
     for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
         @eval Base.convert(::Type{<:DA}, x::$R) = DA(convert(Float64, x))
+        @eval DACE.cons(a::$R) = a
     end
 
-    # overloading power operator for different input types
-    @eval Base.:^(da::DA, p::Integer) = DACE.powi(da, p)
-    @eval Base.:^(da::DA, p::Float64) = DACE.powd(da, p)
+    # power operators
+    Base.:^(da::DA, p::Integer) = DACE.powi(da, p)
+    Base.:^(da::DA, p::Float64) = DACE.powd(da, p)
 
-    # overloading comparison operators (considering only the constant part)
+    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
+        @eval Base.:^(a::$R, b::DA) = a^DACE.cons(b)
+    end
+
+    # comparison operators (considering only the constant part)
     for op = (:(==), :(!=), :<, :(<=), :>, :(>=))
 
         # both arguments are DA objects
@@ -67,56 +88,47 @@ module DACE
         end
     end
 
-    @eval Base.isfinite(a::DA) = isfinite(DACE.cons(a))
-    @eval Base.isinf(a::DA) = isinf(DACE.cons(a))
-    @eval Base.isnan(a::DA) = isnan(DACE.cons(a))
-    @eval Base.float(a::DA) = a
+    Base.isfinite(a::DA) = isfinite(DACE.cons(a))
+    Base.isinf(a::DA) = isinf(DACE.cons(a))
+    Base.isnan(a::DA) = isnan(DACE.cons(a))
+    Base.float(a::DA) = a
 
-    # overloading special functions
+    # assignment of vector and matrix elements
+    Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
+    Base.setindex!(m::AlgebraicMatrix{<:DA}, x::Real, i::Integer, j::Integer) = m[i,j] = convert(DA, x)
+
+    # custom show functions for DA and AlgebraicVector objects
+    Base.show(io::IO, da::DA) = print(io, toString(da))
+    Base.show(io::IO, vec::AlgebraicVector) = print(io, toString(vec))
+    Base.show(io::IO, mat::AlgebraicMatrix) = print(io, toString(mat))
+
+    # -------------------------------------- #
+    # overload functions in SpecialFunctions #
+    # -------------------------------------- #
+
+    # error and complementary error functions
     SpecialFunctions.erf(a::DA) = DACE.erf(a)
     SpecialFunctions.erfc(a::DA) = DACE.erfc(a)
 
-    # functions needed to interact with DifferentialEquations
-    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
-        @eval Base.:^(a::$R, b::DA) = a^DACE.cons(b)
-    end
-    @eval DiffEqBase.value(a::DA) = DACE.cons(a)
+    # -------------------------------- #
+    # overload functions in DiffEqBase #
+    # -------------------------------- #
 
-    # functions to avoid code duplicates
-    for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
-        @eval DACE.cons(a::$R) = a
-    end
+    DiffEqBase.value(a::DA) = DACE.cons(a)
 
-    # constructors for concrete DA type
-    DA(x::Rational) = DA(convert(Float64,x))
-    DAAllocated() = DA(0.0)
-    DAAllocated(x::Real) = DA(x)
+    # ---------------------------------------------- #
+    # wrappers to handle different subtypes of Array #
+    # ---------------------------------------------- #
 
-    # constructors for AlgebraicVector type
-    # TODO is there a better way to do this?
-    AlgebraicVector(v::Vector{<:DA}) = AlgebraicVector{DA}(v)
-    AlgebraicVector(v::Vector{Float64}) = AlgebraicVector{Float64}(v)
-    AlgebraicVector{T}(v::Vector{<:T}) where T = begin
-        res = AlgebraicVector{T}(length(v))
-        for i in eachindex(v)
-            res[i] = v[i]
-        end
-        return res
-    end
-
-    # assignment of vector and matrix elements
-    @eval Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
-    @eval Base.setindex!(m::AlgebraicMatrix{<:DA}, x::Real, i::Integer, j::Integer) = m[i,j] = convert(DA, x)
-
-    # wrappers for map inversion
+    # map inversion
     invert(v::Vector{<:DA}) = Vector{DA}(invert(AlgebraicVector(v)))
 
-    # wrappers for linear part, Jacobian and Hessian
+    # linear part, Jacobian and Hessian
     linear(v::Vector{<:DA}) = linear(AlgebraicVector(v))
     jacobian(v::Vector{<:DA}) = jacobian(AlgebraicVector(v))
     hessian(v::Vector{<:DA}) = stack(hessian(AlgebraicVector(v)), dims=3)
 
-    # wrappers for compilation and evaluation of DA objects
+    # compilation and evaluation of DA objects
     compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
     for R in (DA, Float64)
         @eval eval(cda::compiledDA, v::Vector{<:$R}) = Vector{$R}(eval(cda, AlgebraicVector(v)))
@@ -125,6 +137,10 @@ module DACE
         @eval eval(a::AlgebraicVector{DA}, v::Vector{<:$R}) = Vector{$R}(eval(a, AlgebraicVector(v)))
     end
 
-    # define some exports
+    # ------- #
+    # exports #
+    # ------- #
+
     export DA, AlgebraicVector, AlgebraicMatrix, compiledDA
+
 end  # module DACE
