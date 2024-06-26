@@ -1,8 +1,10 @@
 # add some documentation
 @doc """
-    DA()
+$(TYPEDEF)
 
-Create an empty DA object representing the constant zero function.
+DA object representing a single polynomial. The default constructor (with no
+arguments) creates an empty DA object representing the constant zero function.
+
 """ DA
 
 @doc """
