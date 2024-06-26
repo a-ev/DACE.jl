@@ -3,6 +3,13 @@ module DACE
     using CxxWrap
     using SpecialFunctions
     using DiffEqBase
+    using DocStringExtensions
+
+    DocStringExtensions.@template DEFAULT =
+        """
+        $(TYPEDSIGNATURES)
+        $(DOCSTRING)
+        """
 
     mutable struct Interval
         m_lb::Float64
