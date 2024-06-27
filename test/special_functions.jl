@@ -5,15 +5,15 @@ using SpecialFunctions
         DACE.init(1,3)
 
         x = DACE.random(-1)
-        @test isapprox(DACE.cons(erf(x)), erf(DACE.cons(x)), atol=1e-8, rtol=1e-5)
+        @test isapprox(DACE.cons(erf(x)), erf(DACE.cons(x)), atol=1e-15, rtol=1e-15)
 
     end
 
     @testset "Test erfc" begin
         DACE.init(1,3)
-        
+
         x = DACE.random(-1)
-        @test isapprox(DACE.cons(erfc(x)), erfc(DACE.cons(x)), atol=1e-8, rtol=1e-5)
+        @test isapprox(DACE.cons(erfc(x)), erfc(DACE.cons(x)), atol=1e-15, rtol=1e-15)
 
     end
 
