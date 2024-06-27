@@ -1,6 +1,6 @@
 name: Run tests
 
-on: 
+on:
   push:
   pull_request:
 
@@ -22,8 +22,6 @@ jobs:
         with:
           version: ${{ matrix.julia-version }}
           arch: ${{ matrix.julia-arch }}
-      - run: julia --project -e 'using Pkg; Pkg.add(url="https://github.com/chrisdjscott/DACE_jll.jl.git")'
-        shell: bash
       - uses: julia-actions/julia-buildpkg@v1
       - uses: julia-actions/julia-runtest@v1
         # with:

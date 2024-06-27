@@ -12,6 +12,7 @@ const OUTPUT_DIR = joinpath(@__DIR__, "src", "generated")
 example_scripts = [
     "sine.jl",
     "polynomial_inversion.jl",
+    "ode_integration.jl"
 ]
 
 println("Building examples...")
@@ -29,6 +30,7 @@ println("Finished building examples")
 example_pages = [
     "Sine function" => "generated/sine.md",
     "Polynomial inversion" => "generated/polynomial_inversion.md",
+    "ODE integration" => "generated/ode_integration.md"
 ]
 
 tutorial_pages = [
@@ -42,6 +44,7 @@ pages = [
 #    "Developer Guide" => "developing.md",
     "Tutorials" => tutorial_pages,
     "Examples" => example_pages,
+    "API" => "api.md"
 ]
 
 # build and deploy docs
