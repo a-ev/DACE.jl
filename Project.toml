@@ -11,7 +11,8 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 
 [compat]
-CxxWrap = ">=0.15"
+CxxWrap = "~0.16"
+DACE_jll = "~0.4"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
