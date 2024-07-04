@@ -33,8 +33,10 @@ module DACE
     # custom constructors #
     # ------------------- #
 
-    # concrete DA types
+    DA(b::Bool) = DA(b ? 1.0 : 0.0)
     DA(x::Rational) = DA(convert(Float64,x))
+
+    # concrete DA types
     DAAllocated() = DA(0.0)
     DAAllocated(x::Real) = DA(x)
 
@@ -75,6 +77,8 @@ module DACE
     end
 
     Base.float(a::DA) = a
+    Base.eps(a::DA) = eps(cons(a))
+    Base.eps(::Type{T}) where {T<:DA} = eps(Float64)
 
     # power operators
     Base.:^(da::DA, p::Integer) = DACE.powi(da, p)
