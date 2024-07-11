@@ -12,7 +12,7 @@ DocStringExtensions = "ffbed154-4ef7-542d-bbb7-c09d3a79fcae"
 
 [compat]
 CxxWrap = "~0.16"
-DACE_jll = "~0.4"
+DACE_jll = "~0.5"
 DiffEqBase = "^6"
 SpecialFunctions = "^2"
 DocStringExtensions = "^0.9"
