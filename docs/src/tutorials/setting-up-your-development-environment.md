@@ -1,8 +1,5 @@
 # Setting up your development environment
 
-!!! warning
-    These instructions will change when DACE\_jll is released as a package.
-
 This tutorial will run through setting up DACE\_jll.jl, DACE.jl and the DACE C++ library for development locally.
 It has been tested on Linux.
 
@@ -116,7 +113,7 @@ cmake .. \
 and then build and install DACE with:
 
 ```
-VERBOSE=ON cmake --build . --config Release --target install -- -j${nproc}
+VERBOSE=ON cmake --build . --config Release --target install -- -j$(nproc)
 ```
 
 ## Verify the DACE module is working
@@ -178,7 +175,7 @@ so that we can tell the local version has been loaded. Make the above change the
 We should be in the *build* directory still. Execute the following command to build and install your change:
 
 ```
-VERBOSE=ON cmake --build . --config Release --target install -- -j${nproc}
+VERBOSE=ON cmake --build . --config Release --target install -- -j$(nproc)
 ```
 
 Now change back to the *DACE.jl* directory
