@@ -18,4 +18,5 @@ include("utils.jl")
     end
 
     include("special_functions.jl")
+    include("statistics.jl")
 end
