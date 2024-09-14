@@ -17,6 +17,15 @@ include("utils.jl")
         include("comparison_operators.jl")
     end
 
-    include("special_functions.jl")
-    include("statistics.jl")
+    @testset verbose = true "Special Functions" begin
+        include("special_functions.jl")
+    end
+
+    @testset verbose = true "Linear Algebra" begin
+        include("linear_algebra.jl")
+    end
+
+    @testset verbose = true "Statistics" begin
+        include("statistics.jl")
+    end
 end
