@@ -88,19 +88,6 @@ module DACE
         @eval Base.:^(a::$R, b::DA) = a^DACE.cons(b)
     end
 
-    # comparison operators (considering only the constant part)
-    for op = (:(==), :(!=), :<, :(<=), :>, :(>=))
-
-        # both arguments are DA objects
-        @eval Base.$op(a::DA, b::DA) = $op(DACE.cons(a), DACE.cons(b))
-
-        # one argument is a number
-        for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
-            @eval Base.$op(a::DA, b::$R) = $op(DACE.cons(a), b)
-            @eval Base.$op(a::$R, b::DA) = $op(a, DACE.cons(b))
-        end
-    end
-
     Base.isfinite(a::DA) = isfinite(DACE.cons(a))
     Base.isinf(a::DA) = isinf(DACE.cons(a))
     Base.isnan(a::DA) = isnan(DACE.cons(a))
