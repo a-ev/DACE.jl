@@ -29,18 +29,24 @@ Create and change to a new directory that we can clone the DACE code into. Then 
   git clone --branch julia-interface https://github.com/a-ev/dace.git
   ```
 
-Switch to the *DACE.jl* directory you just cloned:
+Set an environment variable with the path to the current directory, so we can refer back to it later:
 
 ```
-cd DACE.jl
+export srcdir=$PWD
 ```
 
 ## Setup DACE\_jll.jl for development
 
+Switch to the *DACE.jl* directory that you cloned above:
+
+```
+cd ${srcdir}/DACE.jl
+```
+
 Run `julia --project` to enter the Julia REPL and enter `]` to enter the Pkg REPL mode, then
 
 ```julia
-(DACE) pkg> add DACE_jll
+(DACE) pkg> instantiate
 (DACE) pkg> develop DACE_jll
 ```
 
@@ -67,27 +73,104 @@ Don't just copy this command, make sure the path corresponds to the path in your
 rm -rf /home/<username>/.julia/dev/DACE_jll/override/*
 ```
 
+Now store the path in an environment variable so that we can use it later (make sure you replace the path below with your path):
+
+```
+export dacejllpath=${HOME}/.julia/dev/DACE_jll/override
+```
+
+## On Mac OS X only: build our own version of libcxxwrap-julia
+
+!!! note
+
+    Skip this section and continue to the [next step](#Build-the-DACE-C-library) if you are not running on Mac OS X.
+
+On Mac OS X it seems that currently you need to build your own version of *libcxxwrap-julia* in order
+for the remaining instructions to work correctly.
+
+First set up an override directory where we can build our own version of *libcxxwrap-julia*.
+We should still be in the *DACE.jl* directory from above (`cd ${srcdir}/DACE.jl`).
+Run `julia --project` to enter the Julia REPL and enter `]` to enter the Pkg REPL mode, then
+
+```
+pkg> develop libcxxwrap_julia_jll
+```
+
+At this point we should also make a note of the version of *libcxxwrap_julia_jll*:
+
+```
+pkg> status libcxxwrap_julia_jll
+```
+
+The above command should output something like:
+
+```
+Project DACE v0.1.0
+Status `/path/to/DACE.jl/Project.toml`
+  [3eaa8342] libcxxwrap_julia_jll v0.13.2+0 `~/.julia/dev/libcxxwrap_julia_jll`
+```
+
+We can see that the version is `v0.13.2` (ignore the "+" and anything after it).
+
+Back in the Julia REPL, import the package and run `dev_jll`:
+
+```
+julia> import libcxxwrap_julia_jll
+julia> libcxxwrap_julia_jll.dev_jll()
+```
+
+At the end of the above command it should print the path to the devved JLL, e.g. `/home/<username>/.julia/dev/libcxxwrap_julia_jll`.
+Inside that directory will be an override directory, which is where we will build our local version of *libcxxwrap_julia*. Make a note of the directory that was printed.
+
+Make sure you are still in the directory where we cloned the other git repos above, clone the *libcxxwrap_julia* repository and checkout the tag that matches the version you found in the *Manifest.toml*:
+
+```
+cd ${srcdir}
+git clone https://github.com/JuliaInterop/libcxxwrap-julia.git
+cd libcxxwrap-julia
+git checkout v0.13.2
+```
+
+Now we will change to the directory where *libcxxwrap_julia_jll* was devved out to and build our own version:
+
+```
+cd /home/<username>/.julia/dev/libcxxwrap_julia_jll/override
+rm -rf *
+cmake -DJulia_EXECUTABLE=$(which julia) ${srcdir}/libcxxwrap-julia
+cmake --build . --config Release
+```
+
 ## Build the DACE C++ library
 
-We should still be in the *DACE.jl* directory from above. Now find the CxxWrap prefix path by entering the Julia REPL (`julia --project`) and running
+Switch to the *DACE.jl* directory from above:
+
+```
+cd ${srcdir}/DACE.jl
+```
+
+Now find the CxxWrap prefix path by entering the Julia REPL (`julia --project`) and running
 
 ```julia
-julia> using CxxWrap
+julia> import CxxWrap
 julia> CxxWrap.prefix_path()
 ```
 
-which should return a path like
+This should return a path like:
 
 ```
 "/home/<username>/.julia/artifacts/fb412eee87eae845b84a799f0cabf241142406d7"
 ```
 
-with a different ID at the end. We will use this path in the CMake command later.
+with a different ID at the end (although it may look like `/Users/<username>/.julia/dev/libcxxwrap_julia_jll` on Mac OS X). We will use this path in the CMake command later so let's store it in an environment variable (make sure you replace the path below with your path):
+
+```
+export prefixpath=${HOME}/.julia/artifacts/fb412eee87eae845b84a799f0cabf241142406d7
+```
 
 Now switch to the *dace* directory we cloned earlier (it should be alongside the *DACE.jl* directory we are currently working in):
 
 ```
-cd ../dace
+cd ${srcdir}/dace
 ```
 
 Make a build directory and switch to it:
@@ -97,12 +180,12 @@ mkdir build
 cd build
 ```
 
-Now run the cmake command to configure DACE (make sure to replace the first two paths with the paths you found above):
+Now run the cmake command to configure DACE:
 
 ```
 cmake .. \
-    -DCMAKE_INSTALL_PREFIX=/home/<username>/.julia/dev/DACE_jll/override \
-    -DCMAKE_PREFIX_PATH=/home/<username>/.julia/artifacts/fb412eee87eae845b84a799f0cabf241142406d7 \
+    -DCMAKE_INSTALL_PREFIX=${dacejllpath} \
+    -DCMAKE_PREFIX_PATH=${prefixpath} \
     -DCMAKE_BUILD_TYPE=Release \
     -DWITH_PTHREAD=ON \
     -DWITH_ALGEBRAICMATRIX=ON \
@@ -118,10 +201,10 @@ VERBOSE=ON cmake --build . --config Release --target install -- -j$(nproc)
 
 ## Verify the DACE module is working
 
-Switch back to the *DACE.jl* directory. If you are still in the *build* directory from above run:
+Switch back to the *DACE.jl* directory.
 
 ```
-cd ../../DACE.jl
+cd ${srcdir}/DACE.jl
 ```
 
 Enter the Julia REPL with `julia --project` and run
@@ -141,7 +224,7 @@ Now we will make a change to the local C++ source code and verify that the chang
 Switch back to the *dace/build* directory
 
 ```
-cd ../dace/build
+cd ${srcdir}/dace/build
 ```
 
 Edit the interface file *../interfaces/julia/dace_julia.cxx* using an editor such as *vim* or *nano*.
@@ -181,9 +264,8 @@ VERBOSE=ON cmake --build . --config Release --target install -- -j$(nproc)
 Now change back to the *DACE.jl* directory
 
 ```
-cd ../../DACE.jl
+cd ${srcdir}/DACE.jl
 ```
-
 
 Once again, enter the Julia REPL with `julia --project` and run the `DACE.init` function we ran above:
 
