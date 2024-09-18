@@ -122,7 +122,7 @@ julia> libcxxwrap_julia_jll.dev_jll()
 At the end of the above command it should print the path to the devved JLL, e.g. `/home/<username>/.julia/dev/libcxxwrap_julia_jll`.
 Inside that directory will be an override directory, which is where we will build our local version of *libcxxwrap_julia*. Make a note of the directory that was printed.
 
-Make sure you are still in the directory where we cloned the other git repos above, clone the *libcxxwrap_julia* repository and checkout the tag that matches the version you found in the *Manifest.toml*:
+Make sure you are still in the directory where we cloned the other git repos above, clone the *libcxxwrap_julia* repository and checkout the tag that matches the version you found above:
 
 ```
 cd ${srcdir}
