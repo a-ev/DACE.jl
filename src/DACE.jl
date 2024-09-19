@@ -120,7 +120,7 @@ module DACE
     # ---------------------------------------------- #
 
     # map inversion
-    invert(v::Vector{<:DA}) = Vector{DA}(invert(AlgebraicVector(v)))
+    invert(v::Vector{<:DA}) = invert(AlgebraicVector(v))
 
     # linear part, Jacobian and Hessian
     linear(v::Vector{<:DA}) = linear(AlgebraicVector(v))
@@ -130,10 +130,10 @@ module DACE
     # compilation and evaluation of DA objects
     compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
     for R in (DA, Float64)
-        @eval eval(cda::compiledDA, v::Vector{<:$R}) = Vector{$R}(eval(cda, AlgebraicVector(v)))
+        @eval eval(cda::compiledDA, v::Vector{<:$R}) = eval(cda, AlgebraicVector(v))
         @eval eval(da::DA, v::Vector{<:$R}) = eval(da, AlgebraicVector(v))
-        @eval eval(a::Vector{<:DA}, v::Vector{<:$R}) = Vector{$R}(eval(AlgebraicVector(a), AlgebraicVector(v)))
-        @eval eval(a::AlgebraicVector{DA}, v::Vector{<:$R}) = Vector{$R}(eval(a, AlgebraicVector(v)))
+        @eval eval(a::Vector{<:DA}, v::Vector{<:$R}) = eval(AlgebraicVector(a), AlgebraicVector(v))
+        @eval eval(a::AlgebraicVector{DA}, v::Vector{<:$R}) = eval(a, AlgebraicVector(v))
     end
 
     # ------- #
