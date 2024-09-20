@@ -40,15 +40,20 @@ module DACE
     DAAllocated() = DA(0.0)
     DAAllocated(x::Real) = DA(x)
 
-    # AlgebraicVector objects
-    # TODO is there a better way to do this?
-    AlgebraicVector(v::Vector{<:DA}) = AlgebraicVector{DA}(v)
-    AlgebraicVector(v::Vector{Float64}) = AlgebraicVector{Float64}(v)
-    AlgebraicVector{T}(v::Vector{<:T}) where T = begin
+    # AlgebraicVector and AlgebraicMatrix constructors from Julia vectors and matrices
+    for R in (DA, Float64)
+        @eval AlgebraicVector(v::AbstractVector{<:$R}) = AlgebraicVector{$R}(v)
+        @eval AlgebraicMatrix(m::AbstractMatrix{<:$R}) = AlgebraicMatrix{$R}(m)
+    end
+
+    AlgebraicVector{T}(v::AbstractVector{<:T}) where T<:Union{DA, Float64} = begin
         res = AlgebraicVector{T}(length(v))
-        for i in eachindex(v)
-            res[i] = v[i]
-        end
+        res .= v
+        return res
+    end
+    AlgebraicMatrix{T}(v::AbstractMatrix{<:T}) where T<:Union{DA, Float64} = begin
+        res = AlgebraicMatrix{T}(size(v)...)
+        res .= v
         return res
     end
 
@@ -60,11 +65,10 @@ module DACE
     Base.zero(::Type{DA}) = DA(0.0)
     Base.one(::Type{DA}) = DA(1.0)
 
-    # similar function for AlgebraicVector
-    function Base.similar(foo::AlgebraicVector{DA})
-        sz = size(foo)[1]
-        bar = AlgebraicVector{DA}(sz)
-        return bar
+    # similar function for AlgebraicVector and AlgebraicMatrix
+    for R in (DA, Float64)
+        @eval Base.similar(v::AlgebraicVector{<:$R}) = AlgebraicVector{$R}(v)
+        @eval Base.similar(m::AlgebraicMatrix{<:$R}) = AlgebraicMatrix{$R}(m)
     end
 
     # promotions and conversions to DA
@@ -128,7 +132,7 @@ module DACE
     hessian(v::Vector{<:DA}) = stack(hessian(AlgebraicVector(v)), dims=3)
 
     # compilation and evaluation of DA objects
-    compile(v::Vector{<:DA}) = compile(StdVector{DA}(v))
+    compile(v::Vector{<:DA}) = compile(AlgebraicVector(v))
     for R in (DA, Float64)
         @eval eval(cda::compiledDA, v::Vector{<:$R}) = eval(cda, AlgebraicVector(v))
         @eval eval(da::DA, v::Vector{<:$R}) = eval(da, AlgebraicVector(v))
