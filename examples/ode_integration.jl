@@ -16,7 +16,7 @@
 
 # ```julia
 # using Pkg
-# Pkg.add("https://github.com/a-ev/DACE.jl.git")
+# Pkg.add("DACE")
 # ```
 
 # ## Using DACE

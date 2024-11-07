@@ -36,7 +36,8 @@ example_pages = [
 tutorial_pages = [
     "Setting up your development environment" => "tutorials/setting-up-your-development-environment.md",
     "Modifying the C++ side of the interface" => "tutorials/modifying-the-cxx-side-of-the-interface.md",
-    "Making a new release of DACE_jll" => "tutorials/making-a-new-release-of-dace_jll.md",
+    "Making a new release of DACE_jll.jl" => "tutorials/making-a-new-release-of-dace_jll.md",
+    "Making a new release of DACE.jl" => "tutorials/making-a-new-release-of-dace.md",
 ]
 
 pages = [
