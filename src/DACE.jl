@@ -129,8 +129,8 @@ module DACE
     # linear part, Jacobian and Hessian
     linear(v::Vector{<:DA}) = linear(AlgebraicVector(v))
     jacobian(v::Vector{<:DA}) = jacobian(AlgebraicVector(v))
-    hessian(v::Vector{<:DA}) = hessian(AlgebraicVector(v))
-    hessian(a::AlgebraicVector{DA}) = stack(hess_vec(a), dims=3)
+    hessian(v::Vector{<:DA}) = hessian(AlgebraicVector(v)) # vector of Hessian matrices
+    hess_stack(a::V) where V<:Union{Vector{<:DA},AlgebraicVector{<:DA}} = stack(hessian(a), dims=3)
 
     # compilation and evaluation of DA objects
     compile(v::Vector{<:DA}) = compile(AlgebraicVector(v))

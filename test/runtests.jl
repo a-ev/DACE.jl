@@ -25,6 +25,10 @@ include("utils.jl")
         include("linear_algebra.jl")
     end
 
+    @testset verbose = true "Access & extraction" begin
+        include("extraction.jl")
+    end
+
     @testset verbose = true "Statistics" begin
         include("statistics.jl")
     end
