@@ -1,27 +1,22 @@
 # DACE.jl
 
-**Work in progress**
+DACE.jl is a Julia interface to the [DACE](https://github.com/dacelib/dace) library.
 
-Julia interface to [DACE](https://github.com/dacelib/dace).
-
-Documentation is [here](https://a-ev.github.io/DACE.jl/).
+Documentation can be found [here](https://a-ev.github.io/DACE.jl/).
 
 ## Example usage
 
-Install dependencies:
+DACE.jl can be installed using the Julia package manager. From the Julia REPL,
+type `]` to enter the Pkg REPL mode and run
 
 ```
-$ julia --project
-(DACE) pkg> add https://github.com/a-ev/DACE.jl.git
+pkg> add DACE
 ```
 
-Note: the `add` command above may not be needed if you are
-running from the directory containing this file.
-
-Run an example:
+Run a simple example:
 
 ```
-$ julia --project examples/sine.jl
+$ julia examples/sine.jl
 x
      I  COEFFICIENT              ORDER EXPONENTS
      1    1.0000000000000000e+00   1   1
@@ -47,9 +42,17 @@ sin(1.0) = 0.8414709848078965
 
 More examples of how to use *DACE.jl* can be found in the tests, for example [validation_2.jl](test/validation_2.jl).
 
-You can run the validation tests with (using `]` to enter pkg mode from the Julia REPL):
+You can run the validation tests using the Julia package manager.
+Clone this git repository and change into the cloned directory.
+Then enter the Julia REPL using `julia --project` and
+type `]` to enter the Pkg REPL mode and instantiate the package:
 
 ```
-$ julia --project
+(DACE) pkg> instantiate
+```
+
+Then run the tests:
+
+```
 (DACE) pkg> test
 ```

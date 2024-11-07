@@ -1,8 +1,5 @@
 # DACE.jl
 
-!!! warning
-    This package is still in development, is not complete and instructions may change significantly
-
 This is the documentation page for [DACE.jl](https://github.com/a-ev/DACE.jl),
 a Julia interface to the [DACE library](https://github.com/dacelib/dace).
 
@@ -12,10 +9,8 @@ DACE.jl can be installed using the Julia package manager. From the Julia REPL,
 type `]` to enter the Pkg REPL mode and run
 
 ```
-pkg> add https://github.com/a-ev/DACE.jl.git
+pkg> add DACE
 ```
-
-Note: the `add` command above may not be needed if you are running from main directory of the repository.
 
 ## Notes about the interface
 
@@ -25,6 +20,7 @@ Note: the `add` command above may not be needed if you are running from main dir
 - The C++ code gets built by [BinaryBuilder](https://docs.binarybuilder.org/stable/) and released into the Julia registry
   - the build recipe is located [here](https://github.com/JuliaPackaging/Yggdrasil/tree/master/D/DACE)
 - The Julia component of the interface is currently [here](https://github.com/a-ev/DACE.jl)
+  - the DACE library has been released to the Julia General registry
 
 The above may change, in particular we hope to:
 
