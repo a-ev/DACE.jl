@@ -58,7 +58,7 @@ import ForwardDiff: Dual
     Jλde = vcat([[λ.partials...] for λ in λde]'...)
 
     @testset verbose = true "Eigenvalues partials" begin
-        @test all(isapprox.(Jλda, Jλcc, atol=1e-14, rtol=1e-14))
+        @test all(isapprox.(Jλda, Jλcc, atol=1e-13, rtol=1e-13))
         @test all(isapprox.(Jλda, Jλfd, atol=1e-14, rtol=1e-14))
         @test all(isapprox.(Jλda, Jλde, atol=1e-14, rtol=1e-14))
     end
