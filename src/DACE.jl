@@ -16,7 +16,7 @@ module DACE
         m_ub::Float64
     end
 
-    # load the C++ interface and initialise it
+    # load the C++ interface and initialize it
     @wrapmodule(() -> libdace, :define_julia_module)
     function __init__()
         @initcxx
@@ -61,7 +61,7 @@ module DACE
     # overload functions in Base #
     # -------------------------- #
 
-    # addittive and multiplicative identities
+    # additive and multiplicative identities
     Base.zero(::Type{DA}) = DA(0.0)
     Base.one(::Type{DA}) = DA(1.0)
 
@@ -100,7 +100,8 @@ module DACE
     Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
     Base.setindex!(m::AlgebraicMatrix{<:DA}, x::Real, i::Integer, j::Integer) = m[i,j] = convert(DA, x)
 
-    # custom show functions for DA and AlgebraicVector objects
+    # custom show functions for DA-related objects
+    Base.show(io::IO, m::Monomial) = print(io, toString(m))
     Base.show(io::IO, da::DA) = print(io, toString(da))
     Base.show(io::IO, vec::AlgebraicVector) = print(io, toString(vec))
     Base.show(io::IO, mat::AlgebraicMatrix) = print(io, toString(mat))
@@ -145,6 +146,6 @@ module DACE
     # exports #
     # ------- #
 
-    export DA, AlgebraicVector, AlgebraicMatrix, compiledDA
+    export DA, AlgebraicVector, AlgebraicMatrix, compiledDA, Monomial
 
 end  # module DACE
