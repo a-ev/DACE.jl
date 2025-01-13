@@ -32,4 +32,8 @@ include("utils.jl")
     @testset verbose = true "Statistics" begin
         include("statistics.jl")
     end
+
+    @testset verbose = true "Factories" begin
+        include("factory.jl")
+    end
 end
