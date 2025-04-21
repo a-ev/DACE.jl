@@ -103,8 +103,8 @@ module DACE
     # custom show functions for DA-related objects
     Base.show(io::IO, m::Monomial) = print(io, toString(m))
     Base.show(io::IO, da::DA) = print(io, toString(da))
-    Base.show(io::IO, vec::AlgebraicVector) = print(io, toString(vec))
-    Base.show(io::IO, mat::AlgebraicMatrix) = print(io, toString(mat))
+    Base.show(io::IO, vec::AlgebraicVector{T}) where T<:Union{DA, Float64} = print(io, toString(vec))
+    Base.show(io::IO, mat::AlgebraicMatrix{T}) where T<:Union{DA, Float64} = print(io, toString(mat))
 
     # -------------------------------------- #
     # overload functions in SpecialFunctions #
@@ -125,21 +125,21 @@ module DACE
     # ---------------------------------------------- #
 
     # map inversion
-    invert(v::Vector{<:DA}) = invert(AlgebraicVector(v))
+    invert(v::AbstractVector{<:DA}) = invert(AlgebraicVector(v))
 
     # linear part, Jacobian and Hessian
-    linear(v::Vector{<:DA}) = linear(AlgebraicVector(v))
-    jacobian(v::Vector{<:DA}) = jacobian(AlgebraicVector(v))
-    hessian(v::Vector{<:DA}) = hessian(AlgebraicVector(v)) # vector of Hessian matrices
-    hess_stack(a::V) where V<:Union{Vector{<:DA},AlgebraicVector{<:DA}} = stack(hessian(a), dims=3)
+    linear(v::AbstractVector{<:DA}) = linear(AlgebraicVector(v))
+    jacobian(v::AbstractVector{<:DA}) = jacobian(AlgebraicVector(v))
+    hessian(v::AbstractVector{<:DA}) = hessian(AlgebraicVector(v)) # vector of Hessian matrices
+    hess_stack(a::AbstractVector{<:DA}) = stack(hessian(a), dims=3)
 
     # compilation and evaluation of DA objects
-    compile(v::Vector{<:DA}) = compile(AlgebraicVector(v))
+    compile(v::AbstractVector{<:DA}) = compile(AlgebraicVector(v))
     for R in (DA, Float64)
-        @eval eval(cda::compiledDA, v::Vector{<:$R}) = eval(cda, AlgebraicVector(v))
-        @eval eval(da::DA, v::Vector{<:$R}) = eval(da, AlgebraicVector(v))
-        @eval eval(a::Vector{<:DA}, v::Vector{<:$R}) = eval(AlgebraicVector(a), AlgebraicVector(v))
-        @eval eval(a::AlgebraicVector{DA}, v::Vector{<:$R}) = eval(a, AlgebraicVector(v))
+        @eval eval(cda::compiledDA, v::AbstractVector{<:$R}) = eval(cda, AlgebraicVector(v))
+        @eval eval(da::DA, v::AbstractVector{<:$R}) = eval(da, AlgebraicVector(v))
+        @eval eval(a::AbstractVector{<:DA}, v::AbstractVector{<:$R}) = eval(AlgebraicVector(a), AlgebraicVector(v))
+        @eval eval(a::AlgebraicVector{<:DA}, v::AbstractVector{<:$R}) = eval(a, AlgebraicVector(v))
     end
 
     # ------- #
