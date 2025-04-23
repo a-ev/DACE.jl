@@ -74,6 +74,9 @@ module DACE
     # promotions and conversions to DA
     @inline Base.promote_rule(::Type{T}, ::Type{R}) where {T<:DA, R<:Real} = T
     @inline Base.promote_rule(::Type{R}, ::Type{T}) where {T<:DA, R<:Real} = T
+    # FIXME: how to handle these type promotions properly?
+    @inline Base.promote_rule(::Type{T}, ::Type{DAAllocated}) where T<:DA = DAAllocated
+    @inline Base.promote_rule(::Type{DAAllocated}, ::Type{T}) where T<:DA = DAAllocated
 
     for R in (AbstractFloat, AbstractIrrational, Integer, Rational)
         @eval Base.convert(::Type{<:DA}, x::$R) = DA(convert(Float64, x))
