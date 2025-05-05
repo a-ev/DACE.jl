@@ -29,6 +29,9 @@ module DACE
     # extend DACE functionality #
     # ========================= #
 
+    # type alias for convenience
+    const DAOrF64 = Union{DA, Float64}
+
     # ------------------- #
     # custom constructors #
     # ------------------- #
@@ -41,19 +44,20 @@ module DACE
     DAAllocated(x::Real) = DA(x)
 
     # AlgebraicVector and AlgebraicMatrix constructors from Julia vectors and matrices
-    for R in (DA, Float64)
-        @eval AlgebraicVector(v::AbstractVector{<:$R}) = AlgebraicVector{$R}(v)
-        @eval AlgebraicMatrix(m::AbstractMatrix{<:$R}) = AlgebraicMatrix{$R}(m)
-    end
+    AlgebraicVector(v::AbstractVector{<:DA}) = AlgebraicVector{DA}(v)
+    AlgebraicMatrix(m::AbstractMatrix{<:DA}) = AlgebraicMatrix{DA}(m)
+    AlgebraicVector(v::AbstractVector{Float64}) = AlgebraicVector{Float64}(v)
+    AlgebraicMatrix(m::AbstractMatrix{Float64}) = AlgebraicMatrix{Float64}(m)
 
-    AlgebraicVector{T}(v::AbstractVector{<:T}) where T<:Union{DA, Float64} = begin
+    AlgebraicVector{T}(v::AbstractVector{U}) where {T<:DAOrF64, U<:DAOrF64} = begin
         res = AlgebraicVector{T}(length(v))
         res .= v
         return res
     end
-    AlgebraicMatrix{T}(v::AbstractMatrix{<:T}) where T<:Union{DA, Float64} = begin
-        res = AlgebraicMatrix{T}(size(v)...)
-        res .= v
+
+    AlgebraicMatrix{T}(m::AbstractMatrix{U}) where {T<:DAOrF64, U<:DAOrF64} = begin
+        res = AlgebraicMatrix{T}(size(m)...)
+        res .= m
         return res
     end
 
@@ -66,10 +70,10 @@ module DACE
     Base.one(::Type{DA}) = DA(1.0)
 
     # similar function for AlgebraicVector and AlgebraicMatrix
-    for R in (DA, Float64)
-        @eval Base.similar(v::AlgebraicVector{<:$R}) = AlgebraicVector{$R}(v)
-        @eval Base.similar(m::AlgebraicMatrix{<:$R}) = AlgebraicMatrix{$R}(m)
-    end
+    Base.similar(v::AlgebraicVector{<:DA}) = AlgebraicVector{DA}(v)
+    Base.similar(m::AlgebraicMatrix{<:DA}) = AlgebraicMatrix{DA}(m)
+    Base.similar(v::AlgebraicVector{Float64}) = AlgebraicVector{Float64}(v)
+    Base.similar(m::AlgebraicMatrix{Float64}) = AlgebraicMatrix{Float64}(m)
 
     # promotions and conversions to DA
     @inline Base.promote_rule(::Type{T}, ::Type{R}) where {T<:DA, R<:Real} = T
@@ -104,8 +108,8 @@ module DACE
     # custom show functions for DA-related objects
     Base.show(io::IO, m::Monomial) = print(io, toString(m))
     Base.show(io::IO, da::DA) = print(io, toString(da))
-    Base.show(io::IO, vec::AlgebraicVector{T}) where T<:Union{DA, Float64} = print(io, toString(vec))
-    Base.show(io::IO, mat::AlgebraicMatrix{T}) where T<:Union{DA, Float64} = print(io, toString(mat))
+    Base.show(io::IO, vec::AlgebraicVector{T}) where T<:DAOrF64 = print(io, toString(vec))
+    Base.show(io::IO, mat::AlgebraicMatrix{T}) where T<:DAOrF64 = print(io, toString(mat))
 
     # -------------------------------------- #
     # overload functions in SpecialFunctions #
@@ -136,12 +140,14 @@ module DACE
 
     # compilation and evaluation of DA objects
     compile(v::AbstractVector{<:DA}) = compile(AlgebraicVector(v))
-    for R in (DA, Float64)
-        @eval eval(cda::compiledDA, v::AbstractVector{<:$R}) = eval(cda, AlgebraicVector(v))
-        @eval eval(da::DA, v::AbstractVector{<:$R}) = eval(da, AlgebraicVector(v))
-        @eval eval(a::AbstractVector{<:DA}, v::AbstractVector{<:$R}) = eval(AlgebraicVector(a), AlgebraicVector(v))
-        @eval eval(a::AlgebraicVector{<:DA}, v::AbstractVector{<:$R}) = eval(a, AlgebraicVector(v))
-    end
+
+    eval(cda::compiledDA, v::AbstractVector{<:DA}) = eval(cda, AlgebraicVector(v))
+    eval(a::AbstractVector{<:DA}, v::AbstractVector{<:DA}) = eval(AlgebraicVector(a), AlgebraicVector(v))
+    eval(a::AlgebraicVector{<:DA}, v::AbstractVector{<:DA}) = eval(a, AlgebraicVector(v))
+
+    eval(cda::compiledDA, v::AbstractVector{Float64}) = eval(cda, AlgebraicVector(v))
+    eval(a::AbstractVector{<:DA}, v::AbstractVector{Float64}) = eval(AlgebraicVector(a), AlgebraicVector(v))
+    eval(a::AlgebraicVector{<:DA}, v::AbstractVector{Float64}) = eval(a, AlgebraicVector(v))
 
     # ------- #
     # exports #
