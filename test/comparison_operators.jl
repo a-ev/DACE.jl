@@ -13,7 +13,7 @@
 
     @testset "Test >=" begin
         DACE.init(10, 4)
-        
+
         x = 1 + DA(1, 1)
         y = DA(2)
         @test y >= x
@@ -22,4 +22,36 @@
 
     end
 
+    @testset "Test isnan" begin
+        DACE.init(2, 2)
+
+        x = 1.0 + DA(1, 1.0)
+        y = 1.0 + DA(2, Inf)
+        z = 1.0 + DA(2, NaN)
+        @test isnan(x) == false
+        @test isnan(y) == false
+        @test isnan(z) == true
+    end
+
+    @testset "Test isinf" begin
+        DACE.init(2, 2)
+
+        x = 1.0 + DA(1, 1.0)
+        y = 1.0 + DA(2, Inf)
+        z = 1.0 + DA(2, NaN)
+        @test isinf(x) == false
+        @test isinf(y) == true
+        @test isinf(z) == false
+    end
+
+    @testset "Test isfinite" begin
+        DACE.init(2, 2)
+
+        x = 1.0 + DA(1, 1.0)
+        y = 1.0 + DA(2, Inf)
+        z = 1.0 + DA(2, NaN)
+        @test isfinite(x) == true
+        @test isfinite(y) == false
+        @test isfinite(z) == false
+    end
 end

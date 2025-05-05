@@ -95,9 +95,7 @@ module DACE
         @eval Base.:^(a::$R, b::DA) = a^DACE.cons(b)
     end
 
-    Base.isfinite(a::DA) = isfinite(DACE.cons(a))
-    Base.isinf(a::DA) = isinf(DACE.cons(a))
-    Base.isnan(a::DA) = isnan(DACE.cons(a))
+    Base.isfinite(a::DA) = !(isinf(a) || isnan(a))
 
     # assignment of vector and matrix elements
     Base.setindex!(v::AlgebraicVector{<:DA}, x::Real, i::Integer) = v[i] = convert(DA, x)
