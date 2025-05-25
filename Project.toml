@@ -1,7 +1,7 @@
 name = "DACE"
 uuid = "f4439622-e757-4457-9ca0-f65a61d23f40"
 authors = ["Chris Scott <chris.scott@nesi.org.nz>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 CxxWrap = "1f15a43c-97ca-5a2a-ae31-89f07a497df4"
