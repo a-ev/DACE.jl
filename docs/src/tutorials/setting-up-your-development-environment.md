@@ -22,11 +22,11 @@ Create and change to a new directory that we can clone the DACE code into. Then 
 
 - DACE.jl Julia package
   ```
-  git clone https://github.com/a-ev/DACE.jl.git
+  git clone https://github.com/UoA-AstroGroup/DACE.jl.git
   ```
 - DACE C++ library (note specific branch required)
   ```
-  git clone --branch julia-interface https://github.com/a-ev/dace.git
+  git clone --branch julia-interface https://github.com/UoA-AstroGroup/dace.git
   ```
 
 Set an environment variable with the path to the current directory, so we can refer back to it later:

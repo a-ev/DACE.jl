@@ -9,7 +9,7 @@ To make a new release of the DACE\_jll package you can follow the steps in the f
 
 ## Make changes to the DACE C++ code
 
-Make your changes and commit them in the [dace](https://github.com/a-ev/dace/tree/julia-interface) repo and test them (see [setting up your development environment](setting-up-your-development-environment.md) for help getting started with this step).
+Make your changes and commit them in the [dace](https://github.com/UoA-AstroGroup/dace/tree/julia-interface) repo and test them (see [setting up your development environment](setting-up-your-development-environment.md) for help getting started with this step).
 
 Make a note of the unique commit hash that identifies the commit that you want the new release of DACE\_jll to be built against.
 This hash can be found using `git log` or via the commits view in the GitHub interface.
@@ -50,9 +50,8 @@ Edit the *build\_tarballs.jl* file:
 
 - change the commit hash (on or around line 15) that the new version will be based on to the hash of the commit you identified [above](#Make-changes-to-the-DACE-C-code)
   ```
-  GitSource("https://github.com/a-ev/dace.git", "9fe534f9b27c147a171bce1ad7dc8b4706a9457e"),
+  GitSource("https://github.com/UoA-AstroGroup/dace.git", "commit hash"),
   ```
-  where *9fe534f9b27c147a171bce1ad7dc8b4706a9457e* is the commit hash
 
 ## Check the version of libcxxwrap\_julia\_jll
 
@@ -105,7 +104,7 @@ version = v"0.1.0"
 
 # Collection of sources required to build DACE
 sources = [
-    GitSource("https://github.com/a-ev/dace.git", "9fe534f9b27c147a171bce1ad7dc8b4706a9457e"),
+    GitSource("https://github.com/UoA-AstroGroup/dace.git", "ADD COMMIT HASH HERE"),
     DirectorySource("./bundled"),
 ]
 
