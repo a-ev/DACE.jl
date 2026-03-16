@@ -2,7 +2,7 @@
 
 DACE.jl is a Julia interface to the [DACE](https://github.com/dacelib/dace) library.
 
-Documentation can be found [here](https://a-ev.github.io/DACE.jl/).
+Documentation can be found [here](https://UoA-AstroGroup.github.io/DACE.jl/).
 
 ## Example usage
 
